@@ -1,473 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   <title>Bosa‑Care · Login</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bosa‑Care · Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --purple-950:#1c1430; --purple-900:#2d1b4e; --purple-700:#4c1d95; --purple-600:#6d28d9;
+    --purple-500:#7c3aed; --purple-300:#a78bfa; --purple-200:#c4b5fd; --purple-100:#ede9fe; --purple-50:#f8f5ff;
+    --bg:#f6f2fd; --surface:#ffffff; --ink:#201a2e; --ink-soft:#5b5270; --ink-faint:#978caa;
+    --line:rgba(109,40,217,0.10); --line-strong:rgba(109,40,217,0.22);
+    --good:#15803d; --danger:#b91c1c;
+    --radius-sm:10px; --radius-lg:26px; --radius-pill:999px;
+    --shadow-sm:0 2px 10px rgba(76,29,149,0.05); --shadow-lg:0 30px 65px -18px rgba(45,27,78,0.28);
+    --ease:cubic-bezier(.4,0,.2,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;
+    background-image:radial-gradient(ellipse 700px 500px at 12% 88%, rgba(124,58,237,0.10), transparent 50%),
+                      radial-gradient(ellipse 600px 450px at 88% 10%, rgba(179,118,111,0.09), transparent 45%);
+  }
+  a{text-decoration:none;color:inherit;}
+  button{font-family:inherit;cursor:pointer;border:none;}
+  :focus-visible{outline:2.5px solid var(--purple-600);outline-offset:2px;border-radius:6px;}
 
-        body {
-            background: #f5f0ff;
-            color: #1e1a2b;
-            font-family: 'DM Sans', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            background-image:
-                radial-gradient(ellipse at 15% 85%, rgba(124, 58, 237, 0.08) 0%, transparent 45%),
-                radial-gradient(ellipse at 85% 15%, rgba(167, 139, 250, 0.05) 0%, transparent 40%);
-        }
+  .brand-top{display:flex;align-items:center;gap:0.75rem;margin-bottom:2rem;}
+  .brand-top .mark{width:46px;height:46px;background:linear-gradient(150deg,var(--purple-500),var(--purple-900));
+    border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff;box-shadow:var(--shadow-sm);}
+  .brand-top .name{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;color:var(--purple-900);letter-spacing:-0.02em;}
+  .brand-top .name em{font-style:normal;color:var(--purple-600);}
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-        button {
-            font-family: inherit;
-            cursor: pointer;
-            border: none;
-        }
+  .login-card{max-width:480px;width:100%;background:rgba(255,255,255,0.94);backdrop-filter:blur(14px);
+    border:1px solid var(--line);border-radius:var(--radius-lg);padding:2.6rem 2.3rem;box-shadow:var(--shadow-lg);
+    transition:border-color .3s;}
+  .login-card:hover{border-color:var(--line-strong);}
 
-        /* Brand header */
-        .brand-top {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 2rem;
-        }
-        .brand-top .brand-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, #7c3aed, #4a1d8a);
-            border-radius: 14px;
-            border: 1px solid rgba(124, 58, 237, 0.25);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #fff;
-        }
-        .brand-top .brand-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: #2d1b4e;
-            letter-spacing: -0.02em;
-        }
-        .brand-top .brand-name span {
-            color: #7c3aed;
-        }
+  .welcome{text-align:center;margin-bottom:0.2rem;}
+  .welcome h2{font-family:'Playfair Display',serif;font-size:1.85rem;font-weight:700;letter-spacing:-0.02em;color:var(--purple-950);}
+  .welcome p{color:var(--ink-soft);font-size:0.95rem;margin-top:0.35rem;}
 
-        /* Main card */
-        .login-card {
-            max-width: 480px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(128, 90, 213, 0.12);
-            border-radius: 32px;
-            padding: 2.5rem 2.2rem;
-            box-shadow: 0 25px 50px -12px rgba(124, 58, 237, 0.15);
-            transition: border-color 0.3s;
-        }
-        .login-card:hover {
-            border-color: rgba(124, 58, 237, 0.25);
-        }
+  .role-toggle{display:flex;background:var(--purple-50);border-radius:var(--radius-pill);padding:0.3rem;
+    margin:1.9rem 0 1.6rem;border:1px solid var(--line);}
+  .role-toggle button{flex:1;padding:0.72rem 0.5rem;border-radius:var(--radius-pill);background:transparent;
+    color:var(--ink-soft);font-weight:600;font-size:0.95rem;transition:all .22s var(--ease);}
+  .role-toggle button.active{background:linear-gradient(150deg,var(--purple-500),var(--purple-700));color:#fff;
+    box-shadow:0 6px 18px rgba(109,40,217,0.32);}
+  .role-toggle button:hover:not(.active){color:var(--purple-900);}
 
-        .login-card .welcome {
-            text-align: center;
-            margin-bottom: 0.25rem;
-        }
-        .login-card .welcome h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            color: #2d1b4e;
-        }
-        .login-card .welcome p {
-            color: #6b5f7e;
-            font-size: 0.95rem;
-            margin-top: 0.3rem;
-        }
+  .form-group{margin-bottom:1.25rem;}
+  .form-group label{display:block;font-size:0.74rem;font-weight:700;color:var(--ink-soft);margin-bottom:0.4rem;
+    letter-spacing:0.06em;text-transform:uppercase;}
+  .form-group input{width:100%;padding:0.82rem 1.1rem;border-radius:var(--radius-sm);border:1.5px solid var(--line);
+    background:var(--purple-50);color:var(--purple-950);font-size:1rem;font-family:'DM Sans',sans-serif;transition:all .18s;}
+  .form-group input:focus{outline:none;border-color:var(--purple-500);box-shadow:0 0 0 4px rgba(124,58,237,0.10);background:#fff;}
+  .form-group input::placeholder{color:var(--ink-faint);}
 
-        /* Role toggle */
-        .role-toggle {
-            display: flex;
-            background: rgba(124, 58, 237, 0.06);
-            border-radius: 60px;
-            padding: 0.3rem;
-            margin: 1.8rem 0 1.5rem;
-            border: 1px solid rgba(124, 58, 237, 0.08);
-        }
-        .role-toggle button {
-            flex: 1;
-            padding: 0.7rem 0.5rem;
-            border-radius: 40px;
-            background: transparent;
-            color: #6b5f7e;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.25s ease;
-            letter-spacing: 0.02em;
-        }
-        .role-toggle button.active {
-            background: linear-gradient(145deg, #7c3aed, #6d28d9);
-            color: white;
-            box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
-        }
-        .role-toggle button:hover:not(.active) {
-            color: #2d1b4e;
-        }
+  .login-btn{width:100%;padding:0.95rem;border-radius:var(--radius-pill);font-size:1rem;font-weight:700;
+    background:linear-gradient(150deg,var(--purple-500),var(--purple-700));border:none;color:#fff;
+    transition:all .22s var(--ease);box-shadow:0 8px 22px rgba(109,40,217,0.32);letter-spacing:0.03em;margin-top:0.2rem;}
+  .login-btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(109,40,217,0.4);}
+  .login-btn:active{transform:translateY(0);}
 
-        /* Form */
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-        .form-group label {
-            display: block;
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: #6b5f7e;
-            margin-bottom: 0.35rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 0.8rem 1.1rem;
-            border-radius: 14px;
-            border: 1.5px solid rgba(128, 90, 213, 0.1);
-            background: #f8f5ff;
-            color: #2d1b4e;
-            font-size: 1rem;
-            font-family: 'DM Sans', sans-serif;
-            transition: all 0.2s;
-        }
-        .form-group input:focus {
-            outline: none;
-            border-color: #7c3aed;
-            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.08);
-            background: #fff;
-        }
-        .form-group input::placeholder {
-            color: #9a8aaa;
-        }
+  .demo-hint{text-align:center;font-size:0.8rem;color:var(--ink-soft);margin-top:1.6rem;padding-top:1.3rem;
+    border-top:1px solid var(--line);line-height:2;}
+  .demo-hint .lead{color:var(--purple-900);font-weight:700;margin-bottom:0.5rem;}
+  .demo-hint .role-label{color:var(--purple-950);font-weight:600;}
+  .demo-hint code{background:var(--purple-50);padding:0.18rem 0.7rem;border-radius:8px;font-size:0.75rem;
+    color:var(--purple-600);font-family:'DM Sans',monospace;border:1px solid var(--line);}
+  .demo-hint .sep{color:var(--ink-faint);margin:0 0.3rem;}
+  .demo-hint .demo-row{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;}
+  .demo-hint .demo-col{text-align:left;}
 
-        .login-btn {
-            width: 100%;
-            padding: 0.9rem;
-            border-radius: 40px;
-            font-size: 1rem;
-            font-weight: 700;
-            background: linear-gradient(145deg, #7c3aed, #6d28d9);
-            border: none;
-            color: white;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
-            letter-spacing: 0.04em;
-            margin-top: 0.25rem;
-        }
-        .login-btn:hover {
-            background: linear-gradient(145deg, #6d28d9, #5b21b6);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
-        }
-        .login-btn:active {
-            transform: translateY(0);
-        }
+  #loginStatus{margin-top:1rem;padding:0.75rem 1rem;border-radius:var(--radius-sm);font-size:0.85rem;
+    text-align:center;display:none;font-weight:500;}
+  #loginStatus.success{display:block;background:rgba(21,128,61,0.08);border:1px solid rgba(21,128,61,0.18);color:var(--good);}
+  #loginStatus.error{display:block;background:rgba(185,28,28,0.06);border:1px solid rgba(185,28,28,0.15);color:var(--danger);}
 
-        /* Demo credentials */
-        .demo-hint {
-            text-align: center;
-            font-size: 0.8rem;
-            color: #6b5f7e;
-            margin-top: 1.5rem;
-            padding-top: 1.2rem;
-            border-top: 1px solid rgba(128, 90, 213, 0.08);
-            line-height: 2;
-        }
-        .demo-hint .role-label {
-            color: #2d1b4e;
-            font-weight: 600;
-        }
-        .demo-hint code {
-            background: rgba(124, 58, 237, 0.06);
-            padding: 0.15rem 0.7rem;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            color: #7c3aed;
-            font-family: 'DM Sans', monospace;
-            border: 1px solid rgba(124, 58, 237, 0.08);
-        }
-        .demo-hint .sep {
-            color: #9a8aaa;
-            margin: 0 0.3rem;
-        }
-        .demo-hint .demo-row {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-        .demo-hint .demo-col {
-            text-align: left;
-        }
+  .footer-note{margin-top:2rem;font-size:0.72rem;color:var(--ink-faint);text-align:center;letter-spacing:0.04em;}
 
-        /* Status message */
-        #loginStatus {
-            margin-top: 1rem;
-            padding: 0.7rem 1rem;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            text-align: center;
-            display: none;
-            font-weight: 500;
-        }
-        #loginStatus.success {
-            display: block;
-            background: rgba(34, 197, 94, 0.08);
-            border: 1px solid rgba(34, 197, 94, 0.15);
-            color: #16a34a;
-        }
-        #loginStatus.error {
-            display: block;
-            background: rgba(239, 68, 68, 0.06);
-            border: 1px solid rgba(239, 68, 68, 0.12);
-            color: #dc2626;
-        }
-
-        /* Footer */
-        .footer-note {
-            margin-top: 2rem;
-            font-size: 0.7rem;
-            color: #9a8aaa;
-            text-align: center;
-            letter-spacing: 0.04em;
-        }
-
-        /* Responsive */
-        @media (max-width: 500px) {
-            .login-card {
-                padding: 1.8rem 1.2rem;
-                border-radius: 24px;
-            }
-            .brand-top .brand-name {
-                font-size: 1.5rem;
-            }
-            .login-card .welcome h2 {
-                font-size: 1.4rem;
-            }
-            .role-toggle button {
-                font-size: 0.8rem;
-                padding: 0.5rem 0.3rem;
-            }
-            .demo-hint .demo-row {
-                flex-direction: column;
-                gap: 0.5rem;
-                align-items: center;
-            }
-            .demo-hint .demo-col {
-                text-align: center;
-            }
-        }
-    </style>
+  @media (max-width:500px){
+    .login-card{padding:1.9rem 1.3rem;border-radius:20px;}
+    .brand-top .name{font-size:1.5rem;}
+    .welcome h2{font-size:1.4rem;}
+    .role-toggle button{font-size:0.8rem;padding:0.55rem 0.3rem;}
+    .demo-hint .demo-row{flex-direction:column;gap:0.5rem;align-items:center;}
+    .demo-hint .demo-col{text-align:center;}
+  }
+</style>
 </head>
 <body>
 
-    <!-- Brand -->
-    <div class="brand-top">
-        <div class="brand-icon">⚕</div>
-        <span class="brand-name">Bosa‑<span>Care</span></span>
+  <div class="brand-top">
+    <div class="mark">⚕</div>
+    <span class="name">Bosa‑<em>Care</em></span>
+  </div>
+
+  <div class="login-card" id="loginCard">
+
+    <div class="welcome">
+      <h2>Welcome back</h2>
+      <p>Sign in to manage your chronic care</p>
     </div>
 
-    <!-- Login Card -->
-    <div class="login-card" id="loginCard">
-
-        <div class="welcome">
-            <h2>Welcome back</h2>
-            <p>Sign in to manage your chronic care</p>
-        </div>
-
-        <!-- Role Toggle -->
-        <div class="role-toggle" id="roleToggle">
-            <button class="active" data-role="patient" onclick="setRole('patient')">👤 Patient</button>
-            <button data-role="doctor" onclick="setRole('doctor')">👨‍⚕️ Doctor</button>
-        </div>
-
-        <!-- Login Form -->
-        <form id="loginForm" onsubmit="handleLogin(event)">
-            <div class="form-group">
-                <label for="emailInput">Email address</label>
-                <input type="email" id="emailInput" placeholder="you@example.com" value="john@bosa.care" autofocus />
-            </div>
-            <div class="form-group">
-                <label for="passwordInput">Password</label>
-                <input type="password" id="passwordInput" placeholder="••••••••" value="patient123" />
-            </div>
-
-            <button type="submit" class="login-btn" id="loginBtn">Sign In as Patient</button>
-        </form>
-
-        <!-- Status message -->
-        <div id="loginStatus"></div>
-
-        <!-- Demo credentials -->
-        <div class="demo-hint">
-            <div style="color:#6a89b0; font-weight:600; margin-bottom:0.5rem;">🔑 Demo Credentials</div>
-            <div class="demo-row">
-                <div class="demo-col">
-                    <span class="role-label">👤 Patient</span><br />
-                    <code>john@bosa.care</code> <span class="sep">/</span> <code>patient123</code>
-                </div>
-                <div class="demo-col">
-                    <span class="role-label">👨‍⚕️ Doctor</span><br />
-                    <code>sarah@bosa.care</code> <span class="sep">/</span> <code>doctor123</code>
-                </div>
-            </div>
-        </div>
+    <div class="role-toggle" id="roleToggle">
+      <button class="active" data-role="patient" onclick="setRole('patient')" type="button">👤 Patient</button>
+      <button data-role="doctor" onclick="setRole('doctor')" type="button">👨‍⚕️ Doctor</button>
     </div>
 
-    <div class="footer-note">Bosa‑Care · Chronic care management platform</div>
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="emailInput">Email address</label>
+        <input type="email" id="emailInput" placeholder="you@example.com" value="john@bosa.care" autofocus />
+      </div>
+      <div class="form-group">
+        <label for="passwordInput">Password</label>
+        <input type="password" id="passwordInput" placeholder="••••••••" value="patient123" />
+      </div>
 
-    <script>
-        // ===== STATE =====
-        let currentRole = 'patient';
+      <button type="submit" class="login-btn" id="loginBtn">Sign In as Patient</button>
+    </form>
 
-        // ===== FAKE USER DATA =====
-        const USERS = {
-            patient: {
-                email: 'john@bosa.care',
-                password: 'patient123',
-                name: 'John Matthews',
-                dashboard: 'patient-dashboard.html'
-            },
-            doctor: {
-                email: 'sarah@bosa.care',
-                password: 'doctor123',
-                name: 'Dr. Sarah Achieng',
-                dashboard: 'doctor-dashboard.html'
-            }
-        };
+    <div id="loginStatus"></div>
 
-        // ===== ROLE TOGGLE =====
-        function setRole(role) {
-            currentRole = role;
-            const btns = document.querySelectorAll('#roleToggle button');
-            btns.forEach(b => b.classList.remove('active'));
-            document.querySelector(`#roleToggle button[data-role="${role}"]`).classList.add('active');
+    <div class="demo-hint">
+      <div class="lead">🔑 Demo Credentials</div>
+      <div class="demo-row">
+        <div class="demo-col">
+          <span class="role-label">👤 Patient</span><br />
+          <code>john@bosa.care</code> <span class="sep">/</span> <code>patient123</code>
+        </div>
+        <div class="demo-col">
+          <span class="role-label">👨‍⚕️ Doctor</span><br />
+          <code>sarah@bosa.care</code> <span class="sep">/</span> <code>doctor123</code>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            const loginBtn = document.getElementById('loginBtn');
-            loginBtn.textContent = role === 'patient' ? 'Sign In as Patient' : 'Sign In as Doctor';
+  <div class="footer-note">Bosa‑Care · Chronic care management platform</div>
 
-            // Update placeholder email based on role
-            const emailInput = document.getElementById('emailInput');
-            const user = USERS[role];
-            if (emailInput.value !== user.email) {
-                emailInput.value = user.email;
-            }
-            document.getElementById('passwordInput').value = user.password;
+  <script>
+    let currentRole = 'patient';
 
-            // Clear any previous status
-            const status = document.getElementById('loginStatus');
-            status.className = '';
-            status.style.display = 'none';
-            status.textContent = '';
-        }
+    const USERS = {
+      patient: { email: 'john@bosa.care', password: 'patient123', name: 'John Matthews', dashboard: 'patient-dashboard.html' },
+      doctor:  { email: 'sarah@bosa.care', password: 'doctor123', name: 'Dr. Sarah Achieng', dashboard: 'doctor-dashboard.html' }
+    };
 
-        // ===== HANDLE LOGIN =====
-        function handleLogin(e) {
-            e.preventDefault();
+    function setRole(role) {
+      currentRole = role;
+      document.querySelectorAll('#roleToggle button').forEach(b => b.classList.remove('active'));
+      document.querySelector(`#roleToggle button[data-role="${role}"]`).classList.add('active');
 
-            const email = document.getElementById('emailInput').value.trim();
-            const password = document.getElementById('passwordInput').value.trim();
-            const status = document.getElementById('loginStatus');
+      document.getElementById('loginBtn').textContent = role === 'patient' ? 'Sign In as Patient' : 'Sign In as Doctor';
 
-            // Reset status
-            status.className = '';
-            status.style.display = 'none';
-            status.textContent = '';
+      const emailInput = document.getElementById('emailInput');
+      const user = USERS[role];
+      if (emailInput.value !== user.email) emailInput.value = user.email;
+      document.getElementById('passwordInput').value = user.password;
 
-            // Validation
-            if (!email || !password) {
-                showStatus('Please fill in both email and password.', 'error');
-                return;
-            }
+      const status = document.getElementById('loginStatus');
+      status.className = '';
+      status.style.display = 'none';
+      status.textContent = '';
+    }
 
-            // Get the user for the current role
-            const user = USERS[currentRole];
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('emailInput').value.trim();
+      const password = document.getElementById('passwordInput').value.trim();
 
-            // Check credentials
-            if (email === user.email && password === user.password) {
-                // Store user info in localStorage for dashboard
-                localStorage.setItem('bosaUser', JSON.stringify({
-                    name: user.name,
-                    email: user.email,
-                    role: currentRole
-                }));
-                localStorage.setItem('bosaRole', currentRole);
+      if (!email || !password) return showStatus('Please fill in both email and password.', 'error');
 
-                showStatus(`✅ Welcome, ${user.name}! Redirecting…`, 'success');
+      const user = USERS[currentRole];
+      if (email === user.email && password === user.password) {
+        localStorage.setItem('bosaUser', JSON.stringify({ name: user.name, email: user.email, role: currentRole }));
+        localStorage.setItem('bosaRole', currentRole);
+        showStatus(`✅ Welcome, ${user.name}! Redirecting…`, 'success');
+        setTimeout(() => { window.location.href = user.dashboard; }, 1000);
+        return;
+      }
 
-                setTimeout(() => {
-                    window.location.href = user.dashboard;
-                }, 1000);
-                return;
-            }
+      if (currentRole === 'patient' && email === USERS.doctor.email && password === USERS.doctor.password)
+        return showStatus('❌ This is a doctor account. Please switch to Doctor role.', 'error');
+      if (currentRole === 'doctor' && email === USERS.patient.email && password === USERS.patient.password)
+        return showStatus('❌ This is a patient account. Please switch to Patient role.', 'error');
 
-            // Check if they're using the wrong role
-            if (currentRole === 'patient' && email === USERS.doctor.email && password === USERS.doctor.password) {
-                showStatus('❌ This is a doctor account. Please switch to Doctor role.', 'error');
-                return;
-            }
-            if (currentRole === 'doctor' && email === USERS.patient.email && password === USERS.patient.password) {
-                showStatus('❌ This is a patient account. Please switch to Patient role.', 'error');
-                return;
-            }
+      showStatus('❌ Invalid email or password. Please try again.', 'error');
+    }
 
-            // Invalid credentials
-            showStatus('❌ Invalid email or password. Please try again.', 'error');
-        }
+    function showStatus(message, type) {
+      const status = document.getElementById('loginStatus');
+      status.textContent = message;
+      status.className = type;
+      status.style.display = 'block';
+    }
 
-        function showStatus(message, type) {
-            const status = document.getElementById('loginStatus');
-            status.textContent = message;
-            status.className = type;
-            status.style.display = 'block';
-        }
+    document.getElementById('emailInput').addEventListener('input', function () {
+      const val = this.value.trim().toLowerCase();
+      if (val.includes('sarah') || val.includes('doctor')) setRole('doctor');
+      else if (val.includes('john') || val.includes('patient')) setRole('patient');
+    });
 
-        // ===== AUTO-FILL AND DETECT ROLE =====
-        document.getElementById('emailInput').addEventListener('input', function() {
-            const val = this.value.trim().toLowerCase();
-            if (val.includes('sarah') || val.includes('doctor')) {
-                setRole('doctor');
-            } else if (val.includes('john') || val.includes('patient')) {
-                setRole('patient');
-            }
-        });
-
-        // ===== INIT =====
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set initial role based on default email
-            const emailInput = document.getElementById('emailInput');
-            if (emailInput.value.includes('sarah') || emailInput.value.includes('doctor')) {
-                setRole('doctor');
-            } else {
-                setRole('patient');
-            }
-        });
-    </script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const emailInput = document.getElementById('emailInput');
+      setRole(emailInput.value.includes('sarah') || emailInput.value.includes('doctor') ? 'doctor' : 'patient');
+    });
+  </script>
 
 </body>
 </html>
