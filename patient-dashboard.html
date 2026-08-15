@@ -1,841 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bosa‑Care · Patient Dashboard</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bosa‑Care · Patient Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --purple-950:#1c1430; --purple-900:#2d1b4e; --purple-700:#4c1d95; --purple-600:#6d28d9;
+    --purple-500:#7c3aed; --purple-300:#a78bfa; --purple-200:#c4b5fd; --purple-100:#ede9fe; --purple-50:#f8f5ff;
+    --bg:#f6f2fd; --surface:#ffffff; --ink:#201a2e; --ink-soft:#5b5270; --ink-faint:#978caa;
+    --line:rgba(109,40,217,0.10); --line-strong:rgba(109,40,217,0.20);
+    --good-bg:rgba(21,128,61,0.09); --good:#15803d;
+    --warn-bg:rgba(180,83,9,0.10); --warn:#b45309;
+    --danger-bg:rgba(185,28,28,0.08); --danger:#b91c1c;
+    --radius-sm:10px; --radius-md:14px; --radius-lg:20px; --radius-pill:999px;
+    --shadow-sm:0 2px 10px rgba(76,29,149,0.05); --shadow-md:0 10px 28px rgba(76,29,149,0.08);
+    --ease:cubic-bezier(.4,0,.2,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh;}
+  a{text-decoration:none;color:inherit;}
+  button{font-family:inherit;cursor:pointer;border:none;}
+  :focus-visible{outline:2.5px solid var(--purple-600);outline-offset:2px;border-radius:6px;}
 
-        body {
-            background: #f8f6fc;
-            color: #1e1a2b;
-            font-family: 'DM Sans', sans-serif;
-            min-height: 100vh;
-        }
+  /* Navbar */
+  .navbar{display:flex;align-items:center;justify-content:space-between;padding:0.9rem 2rem;
+    background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+    flex-wrap:wrap;gap:0.8rem;position:sticky;top:0;z-index:100;box-shadow:0 2px 18px rgba(76,29,149,0.05);}
+  .brand{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;letter-spacing:-0.02em;color:var(--purple-900);}
+  .brand em{font-style:normal;color:var(--purple-600);}
+  .nav-links{display:flex;align-items:center;gap:1.8rem;font-size:0.9rem;font-weight:500;color:var(--ink-soft);}
+  .nav-links a{transition:0.15s;padding:0.3rem 0;border-bottom:2px solid transparent;}
+  .nav-links a:hover{color:var(--purple-600);}
+  .nav-links a.active{color:var(--purple-600);border-bottom-color:var(--purple-500);}
+  .nav-right{display:flex;align-items:center;gap:1.2rem;}
+  .nav-user{display:flex;align-items:center;gap:0.6rem;font-size:0.9rem;color:var(--ink-soft);font-weight:500;}
+  .nav-user .avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(150deg,var(--purple-500),var(--purple-800,#4c1d95));
+    display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;color:#fff;}
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-        button {
-            font-family: inherit;
-            cursor: pointer;
-            border: none;
-        }
+  /* Buttons */
+  .btn-outline{background:transparent;border:1px solid var(--line-strong);padding:0.5rem 1.3rem;border-radius:var(--radius-pill);
+    color:var(--ink-soft);font-weight:600;font-size:0.85rem;transition:0.2s;}
+  .btn-outline:hover{background:var(--purple-50);border-color:var(--purple-500);color:var(--purple-700);}
+  .btn-primary{background:linear-gradient(150deg,var(--purple-500),var(--purple-700));border:none;padding:0.65rem 1.5rem;
+    border-radius:var(--radius-pill);font-weight:700;color:#fff;transition:0.2s;box-shadow:var(--shadow-md);font-size:0.85rem;}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(109,40,217,0.32);}
+  .btn-secondary{background:var(--purple-50);border:1px solid var(--line);padding:0.6rem 1.25rem;border-radius:var(--radius-pill);
+    color:var(--purple-800,#4c1d95);font-weight:600;transition:0.15s;font-size:0.85rem;}
+  .btn-secondary:hover{background:var(--purple-100);border-color:var(--line-strong);}
 
-        /* ===== NAVBAR ===== */
-        .navbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.9rem 2rem;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid rgba(128, 90, 213, 0.12);
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 20px rgba(128, 90, 213, 0.06);
-        }
-        .brand {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            color: #2d1b4e;
-        }
-        .brand span {
-            color: #7c3aed;
-        }
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 1.8rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: #4a3f5e;
-        }
-        .nav-links a {
-            transition: 0.15s;
-            padding: 0.3rem 0;
-            border-bottom: 2px solid transparent;
-        }
-        .nav-links a:hover {
-            color: #7c3aed;
-            border-bottom-color: rgba(124, 58, 237, 0.3);
-        }
-        .nav-links a.active {
-            color: #7c3aed;
-            border-bottom-color: #7c3aed;
-        }
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-        }
-        .nav-user {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            font-size: 0.9rem;
-            color
-this one
-Here's the Bosa‑Care patient dashboard redesigned with a purple and white color scheme.
+  .container{max-width:1400px;margin:0 auto;padding:1.6rem 2rem 3rem;}
 
-html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bosa‑Care · Patient Dashboard</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  /* Greeting */
+  .greeting{margin-bottom:1.8rem;}
+  .greeting h1{font-family:'Playfair Display',serif;font-size:1.95rem;font-weight:700;color:var(--purple-950);letter-spacing:-0.01em;}
+  .greeting p{color:var(--ink-soft);font-size:1rem;margin-top:0.3rem;}
 
-        body {
-            background: #f5f0ff;
-            color: #1e1a2b;
-            font-family: 'DM Sans', sans-serif;
-            min-height: 100vh;
-        }
+  /* Stats */
+  .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.2rem;margin-bottom:1.8rem;}
+  .stat-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:1.2rem 1.5rem;
+    box-shadow:var(--shadow-sm);transition:0.2s;}
+  .stat-card:hover{border-color:var(--line-strong);box-shadow:var(--shadow-md);}
+  .stat-number{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--purple-600);line-height:1.1;}
+  .stat-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-soft);margin-top:0.3rem;font-weight:600;}
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-        button {
-            font-family: inherit;
-            cursor: pointer;
-            border: none;
-        }
+  /* Grid */
+  .dashboard-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;}
+  .full-width{grid-column:1/-1;}
 
-        /* ===== NAVBAR ===== */
-        .navbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.9rem 2rem;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid rgba(128, 90, 213, 0.12);
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 20px rgba(128, 90, 213, 0.06);
-        }
-        .brand {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            color: #2d1b4e;
-        }
-        .brand span {
-            color: #7c3aed;
-        }
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 1.8rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: #4a3f5e;
-        }
-        .nav-links a {
-            transition: 0.15s;
-            padding: 0.3rem 0;
-            border-bottom: 2px solid transparent;
-        }
-        .nav-links a:hover {
-            color: #7c3aed;
-            border-bottom-color: rgba(124, 58, 237, 0.3);
-        }
-        .nav-links a.active {
-            color: #7c3aed;
-            border-bottom-color: #7c3aed;
-        }
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-        }
-        .nav-user {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            font-size: 0.9rem;
-            color: #4a3f5e;
-        }
-        .nav-user .avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #7c3aed, #6d28d9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #fff;
-        }
-        .btn-outline {
-            background: transparent;
-            border: 1px solid rgba(124, 58, 237, 0.3);
-            padding: 0.45rem 1.3rem;
-            border-radius: 40px;
-            color: #4a3f5e;
-            font-weight: 500;
-            transition: 0.2s;
-            font-size: 0.85rem;
-        }
-        .btn-outline:hover {
-            background: rgba(124, 58, 237, 0.06);
-            border-color: #7c3aed;
-            color: #7c3aed;
-        }
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:1.5rem;
+    box-shadow:var(--shadow-sm);transition:0.2s;}
+  .card:hover{border-color:var(--line-strong);}
+  .card-title{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.09em;color:var(--ink-soft);
+    margin-bottom:1.2rem;display:flex;align-items:center;justify-content:space-between;}
+  .card-title .badge{background:var(--purple-50);padding:0.2rem 0.85rem;border-radius:var(--radius-pill);
+    font-size:0.66rem;color:var(--purple-700);font-weight:700;border:1px solid var(--line);}
 
-        /* ===== BUTTONS ===== */
-        .btn-primary {
-            background: linear-gradient(145deg, #7c3aed, #6d28d9);
-            border: none;
-            padding: 0.6rem 1.4rem;
-            border-radius: 40px;
-            font-weight: 600;
-            color: white;
-            transition: 0.2s;
-            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.25);
-            font-size: 0.85rem;
-        }
-        .btn-primary:hover {
-            background: #6d28d9;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(124, 58, 237, 0.35);
-        }
-        .btn-secondary {
-            background: rgba(124, 58, 237, 0.06);
-            border: 1px solid rgba(124, 58, 237, 0.12);
-            padding: 0.55rem 1.2rem;
-            border-radius: 40px;
-            color: #4a3f5e;
-            font-weight: 500;
-            transition: 0.15s;
-            font-size: 0.85rem;
-        }
-        .btn-secondary:hover {
-            background: rgba(124, 58, 237, 0.1);
-            border-color: rgba(124, 58, 237, 0.25);
-        }
-        .btn-success {
-            background: rgba(34, 197, 94, 0.12);
-            border: 1px solid rgba(34, 197, 94, 0.2);
-            padding: 0.4rem 1rem;
-            border-radius: 30px;
-            color: #16a34a;
-            font-weight: 600;
-            font-size: 0.75rem;
-            transition: 0.15s;
-        }
-        .btn-success:hover {
-            background: rgba(34, 197, 94, 0.2);
-        }
-        .btn-warning {
-            background: rgba(234, 179, 8, 0.1);
-            border: 1px solid rgba(234, 179, 8, 0.2);
-            padding: 0.4rem 1rem;
-            border-radius: 30px;
-            color: #b45309;
-            font-weight: 600;
-            font-size: 0.75rem;
-            transition: 0.15s;
-        }
-        .btn-warning:hover {
-            background: rgba(234, 179, 8, 0.18);
-        }
+  /* Health metrics */
+  .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .metric-item{background:var(--purple-50);border-radius:var(--radius-md);padding:1rem;text-align:center;}
+  .metric-item .value{font-family:'Playfair Display',serif;font-size:1.55rem;font-weight:700;color:var(--purple-700);}
+  .metric-item .label{font-size:0.68rem;color:var(--ink-soft);margin-top:0.2rem;text-transform:uppercase;letter-spacing:0.05em;font-weight:600;}
+  .metric-item .status{font-size:0.64rem;margin-top:0.4rem;padding:0.18rem 0.65rem;border-radius:var(--radius-pill);display:inline-block;font-weight:700;}
+  .status-good{background:var(--good-bg);color:var(--good);}
+  .status-warning{background:var(--warn-bg);color:var(--warn);}
+  .status-danger{background:var(--danger-bg);color:var(--danger);}
 
-        /* ===== CONTAINER ===== */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 1.5rem 2rem;
-        }
+  /* Appointments */
+  .appt-list{max-height:280px;overflow-y:auto;padding-right:4px;}
+  .appt-list::-webkit-scrollbar{width:3px;}
+  .appt-list::-webkit-scrollbar-thumb{background:var(--purple-200);border-radius:6px;}
+  .appt-item{display:flex;align-items:center;justify-content:space-between;padding:0.7rem 0.4rem;border-bottom:1px solid var(--line);}
+  .appt-item .date{font-weight:700;color:var(--purple-600);font-size:0.8rem;min-width:56px;}
+  .appt-item .info{flex:1;margin:0 0.8rem;}
+  .appt-item .info .type{font-weight:600;color:var(--purple-950);font-size:0.9rem;}
+  .appt-item .info .detail{font-size:0.76rem;color:var(--ink-soft);margin-top:0.1rem;}
+  .status-pill{padding:0.22rem 0.8rem;border-radius:var(--radius-pill);font-size:0.62rem;font-weight:700;
+    text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap;}
+  .status-pill.confirmed{background:var(--good-bg);color:var(--good);}
+  .status-pill.pending{background:var(--warn-bg);color:var(--warn);}
+  .status-pill.completed{background:var(--purple-100);color:var(--purple-700);}
+  .status-pill.cancelled{background:var(--danger-bg);color:var(--danger);}
 
-        /* ===== GREETING ===== */
-        .greeting {
-            margin-bottom: 2rem;
-        }
-        .greeting h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            font-weight: 600;
-            color: #2d1b4e;
-        }
-        .greeting p {
-            color: #6b5f7e;
-            font-size: 1rem;
-            margin-top: 0.2rem;
-        }
+  /* Medications */
+  .med-list{display:flex;flex-direction:column;gap:0.6rem;}
+  .med-item{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;
+    background:var(--purple-50);border-radius:var(--radius-md);border-left:3px solid var(--purple-500);}
+  .med-item .name{font-weight:600;color:var(--purple-950);font-size:0.94rem;}
+  .med-item .dosage{font-size:0.8rem;color:var(--ink-soft);margin-top:0.1rem;}
+  .med-item .schedule{font-size:0.7rem;color:var(--purple-700);background:var(--purple-100);padding:0.2rem 0.75rem;
+    border-radius:var(--radius-pill);font-weight:600;white-space:nowrap;}
 
-        /* ===== STATS ROW ===== */
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1.2rem;
-            margin-bottom: 2rem;
-        }
-        .stat-card {
-            background: #ffffff;
-            border: 1px solid rgba(128, 90, 213, 0.08);
-            border-radius: 20px;
-            padding: 1.2rem 1.5rem;
-            box-shadow: 0 4px 16px rgba(128, 90, 213, 0.05);
-            transition: 0.2s;
-        }
-        .stat-card:hover {
-            border-color: rgba(128, 90, 213, 0.15);
-            box-shadow: 0 8px 24px rgba(128, 90, 213, 0.08);
-        }
-        .stat-card .stat-number {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            font-weight: 600;
-            color: #7c3aed;
-            line-height: 1.1;
-        }
-        .stat-card .stat-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: #6b5f7e;
-            margin-top: 0.2rem;
-        }
+  /* Symptom log */
+  .symptom-form textarea{width:100%;padding:0.85rem 1rem;border-radius:var(--radius-md);border:1.5px solid var(--line);
+    background:var(--purple-50);color:var(--purple-950);font-size:0.9rem;font-family:'DM Sans',sans-serif;
+    resize:vertical;min-height:80px;transition:0.15s;}
+  .symptom-form textarea:focus{outline:none;border-color:var(--purple-500);box-shadow:0 0 0 3px rgba(124,58,237,0.10);background:#fff;}
+  .symptom-form textarea::placeholder{color:var(--ink-faint);}
+  .symptom-form .actions{display:flex;gap:0.8rem;margin-top:0.85rem;flex-wrap:wrap;}
 
-        /* ===== GRID ===== */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
+  .symptom-history{margin-top:1rem;max-height:150px;overflow-y:auto;}
+  .symptom-history::-webkit-scrollbar{width:3px;}
+  .symptom-history::-webkit-scrollbar-thumb{background:var(--purple-200);border-radius:6px;}
+  .symptom-entry{padding:0.55rem 0;border-bottom:1px solid var(--line);font-size:0.85rem;display:flex;justify-content:space-between;gap:1rem;}
+  .symptom-entry .text{color:var(--ink);}
+  .symptom-entry .time{font-size:0.7rem;color:var(--ink-faint);white-space:nowrap;}
 
-        /* ===== CARDS ===== */
-        .card {
-            background: #ffffff;
-            border: 1px solid rgba(128, 90, 213, 0.08);
-            border-radius: 20px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 16px rgba(128, 90, 213, 0.04);
-            transition: 0.2s;
-        }
-        .card:hover {
-            border-color: rgba(128, 90, 213, 0.12);
-            box-shadow: 0 8px 24px rgba(128, 90, 213, 0.06);
-        }
-        .card-title {
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #6b5f7e;
-            margin-bottom: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .card-title .badge {
-            background: rgba(124, 58, 237, 0.08);
-            padding: 0.15rem 0.8rem;
-            border-radius: 30px;
-            font-size: 0.65rem;
-            color: #7c3aed;
-        }
+  /* Prescriptions */
+  .rx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+  .rx-card{background:var(--purple-50);border-radius:var(--radius-md);padding:1.1rem;border:1px solid var(--line);}
+  .rx-card .name{font-weight:700;color:var(--purple-700);font-size:0.95rem;}
+  .rx-card .dosage{font-size:0.84rem;color:var(--ink-soft);margin-top:0.25rem;}
+  .rx-card .refills{font-size:0.72rem;color:var(--ink-faint);margin-top:0.5rem;}
+  .rx-card .state{font-size:0.72rem;margin-top:0.2rem;font-weight:700;}
+  .rx-card .state.active{color:var(--good);}
+  .rx-card .state.needed{color:var(--warn);}
 
-        /* ===== HEALTH METRICS ===== */
-        .metric-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-        .metric-item {
-            background: #f8f5ff;
-            border-radius: 14px;
-            padding: 1rem;
-            text-align: center;
-        }
-        .metric-item .value {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.6rem;
-            font-weight: 600;
-            color: #7c3aed;
-        }
-        .metric-item .label {
-            font-size: 0.7rem;
-            color: #6b5f7e;
-            margin-top: 0.2rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .metric-item .status {
-            font-size: 0.65rem;
-            margin-top: 0.3rem;
-            padding: 0.15rem 0.6rem;
-            border-radius: 20px;
-            display: inline-block;
-        }
-        .status-good {
-            background: rgba(34, 197, 94, 0.1);
-            color: #16a34a;
-        }
-        .status-warning {
-            background: rgba(234, 179, 8, 0.1);
-            color: #b45309;
-        }
-        .status-danger {
-            background: rgba(239, 68, 68, 0.08);
-            color: #dc2626;
-        }
-
-        /* ===== APPOINTMENTS LIST ===== */
-        .appt-list {
-            max-height: 280px;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-        .appt-list::-webkit-scrollbar {
-            width: 3px;
-        }
-        .appt-list::-webkit-scrollbar-thumb {
-            background: #d5c4f0;
-            border-radius: 6px;
-        }
-        .appt-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.7rem 0.5rem;
-            border-bottom: 1px solid rgba(128, 90, 213, 0.05);
-        }
-        .appt-item .date {
-            font-weight: 600;
-            color: #7c3aed;
-            font-size: 0.8rem;
-            min-width: 80px;
-        }
-        .appt-item .info {
-            flex: 1;
-            margin: 0 0.8rem;
-        }
-        .appt-item .info .type {
-            font-weight: 500;
-            color: #2d1b4e;
-        }
-        .appt-item .info .detail {
-            font-size: 0.75rem;
-            color: #6b5f7e;
-        }
-        .status-pill {
-            padding: 0.2rem 0.8rem;
-            border-radius: 30px;
-            font-size: 0.6rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        .status-pill.confirmed {
-            background: rgba(34, 197, 94, 0.1);
-            color: #16a34a;
-        }
-        .status-pill.pending {
-            background: rgba(234, 179, 8, 0.1);
-            color: #b45309;
-        }
-        .status-pill.completed {
-            background: rgba(124, 58, 237, 0.08);
-            color: #7c3aed;
-        }
-        .status-pill.cancelled {
-            background: rgba(239, 68, 68, 0.08);
-            color: #dc2626;
-        }
-
-        /* ===== MEDICATION LIST ===== */
-        .med-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-        }
-        .med-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.7rem 1rem;
-            background: #f8f5ff;
-            border-radius: 12px;
-            border-left: 3px solid #7c3aed;
-        }
-        .med-item .name {
-            font-weight: 500;
-            color: #2d1b4e;
-        }
-        .med-item .dosage {
-            font-size: 0.8rem;
-            color: #6b5f7e;
-        }
-        .med-item .schedule {
-            font-size: 0.7rem;
-            color: #7c3aed;
-            background: rgba(124, 58, 237, 0.08);
-            padding: 0.15rem 0.7rem;
-            border-radius: 20px;
-        }
-
-        /* ===== SYMPTOM LOG ===== */
-        .symptom-form textarea {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border-radius: 14px;
-            border: 1.5px solid rgba(128, 90, 213, 0.12);
-            background: #f8f5ff;
-            color: #2d1b4e;
-            font-size: 0.9rem;
-            font-family: 'DM Sans', sans-serif;
-            resize: vertical;
-            min-height: 80px;
-            transition: 0.15s;
-        }
-        .symptom-form textarea:focus {
-            outline: none;
-            border-color: #7c3aed;
-            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.08);
-        }
-        .symptom-form textarea::placeholder {
-            color: #9a8aaa;
-        }
-        .symptom-form .actions {
-            display: flex;
-            gap: 0.8rem;
-            margin-top: 0.8rem;
-            flex-wrap: wrap;
-        }
-
-        .symptom-history {
-            margin-top: 1rem;
-            max-height: 150px;
-            overflow-y: auto;
-        }
-        .symptom-history::-webkit-scrollbar {
-            width: 3px;
-        }
-        .symptom-history::-webkit-scrollbar-thumb {
-            background: #d5c4f0;
-            border-radius: 6px;
-        }
-        .symptom-entry {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(128, 90, 213, 0.05);
-            font-size: 0.85rem;
-        }
-        .symptom-entry .text {
-            color: #2d1b4e;
-        }
-        .symptom-entry .time {
-            font-size: 0.7rem;
-            color: #9a8aaa;
-            float: right;
-        }
-
-        /* ===== FULL WIDTH ===== */
-        .full-width {
-            grid-column: 1 / -1;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1024px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-            .full-width {
-                grid-column: 1;
-            }
-        }
-        @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 0.8rem 1rem;
-            }
-            .nav-links {
-                justify-content: center;
-                flex-wrap: wrap;
-                gap: 1rem;
-            }
-            .nav-right {
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            .container {
-                padding: 1rem;
-            }
-            .stats-row {
-                grid-template-columns: 1fr 1fr;
-            }
-            .metric-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-        @media (max-width: 480px) {
-            .stats-row {
-                grid-template-columns: 1fr;
-            }
-            .metric-grid {
-                grid-template-columns: 1fr;
-            }
-
+  @media (max-width:1024px){.dashboard-grid{grid-template-columns:1fr;}.full-width{grid-column:1;}.rx-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:768px){
+    .navbar{flex-direction:column;align-items:stretch;padding:0.8rem 1rem;}
+    .nav-links{justify-content:center;flex-wrap:wrap;gap:1rem;}
+    .nav-right{justify-content:center;flex-wrap:wrap;}
+    .container{padding:1rem;}
+    .stats-row{grid-template-columns:1fr 1fr;}
+    .metric-grid{grid-template-columns:1fr 1fr;}
+    .rx-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:480px){.stats-row{grid-template-columns:1fr;}.metric-grid{grid-template-columns:1fr;}}
+</style>
 </head>
 <body>
 
-    <!-- ===== NAVBAR ===== -->
-    <nav class="navbar">
-        <div class="brand">Bosa‑<span>Care</span></div>
-        <div class="nav-links">
-            <a href="#" class="active">Dashboard</a>
-            <a href="#">Appointments</a>
-            <a href="#">Medications</a>
-            <a href="#">Health Records</a>
-        </div>
-        <div class="nav-right">
-            <div class="nav-user">
-                <div class="avatar">JM</div>
-                <span>John Matthews</span>
-            </div>
-            <button class="btn-outline" onclick="alert('Signing out…')">Sign Out</button>
-        </div>
-    </nav>
-
-    <!-- ===== MAIN CONTENT ===== -->
-    <div class="container">
-
-        <!-- Greeting -->
-        <div class="greeting">
-            <h1>Good morning, John 👋</h1>
-            <p>Here's your health overview for today. Stay on track with your care plan.</p>
-        </div>
-
-        <!-- Stats -->
-        <div class="stats-row">
-            <div class="stat-card">
-                <div class="stat-number">2</div>
-                <div class="stat-label">Upcoming Appointments</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">4</div>
-                <div class="stat-label">Active Medications</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">12</div>
-                <div class="stat-label">Symptom Logs This Month</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">3</div>
-                <div class="stat-label">Prescriptions Refills</div>
-            </div>
-        </div>
-
-        <!-- Dashboard Grid -->
-        <div class="dashboard-grid">
-
-            <!-- ===== HEALTH METRICS ===== -->
-            <div class="card">
-                <div class="card-title">
-                    <span>📊 Health Metrics</span>
-                    <span class="badge">Updated: Today</span>
-                </div>
-                <div class="metric-grid">
-                    <div class="metric-item">
-                        <div class="value">6.2%</div>
-                        <div class="label">HbA1c</div>
-                        <span class="status status-good">● On Target</span>
-                    </div>
-                    <div class="metric-item">
-                        <div class="value">128/82</div>
-                        <div class="label">Blood Pressure</div>
-                        <span class="status status-good">● Normal</span>
-                    </div>
-                    <div class="metric-item">
-                        <div class="value">180</div>
-                        <div class="label">Cholesterol</div>
-                        <span class="status status-warning">● Borderline</span>
-                    </div>
-                    <div class="metric-item">
-                        <div class="value">72</div>
-                        <div class="label">Heart Rate</div>
-                        <span class="status status-good">● Normal</span>
-                    </div>
-                </div>
-                <div style="margin-top:1rem; text-align:center;">
-                    <button class="btn-secondary" style="font-size:0.75rem;">View Full Lab Results</button>
-                </div>
-            </div>
-
-            <!-- ===== UPCOMING APPOINTMENTS ===== -->
-            <div class="card">
-                <div class="card-title">
-                    <span>📅 Upcoming Appointments</span>
-                    <span class="badge">2 upcoming</span>
-                </div>
-                <div class="appt-list">
-                    <div class="appt-item">
-                        <span class="date">26 Aug</span>
-                        <div class="info">
-                            <div class="type">Physical Visit · Dr. Achieng</div>
-                            <div class="detail">10:30 AM · Diabetes follow-up</div>
-                        </div>
-                        <span class="status-pill confirmed">Confirmed</span>
-                    </div>
-                    <div class="appt-item">
-                        <span class="date">2 Sep</span>
-                        <div class="info">
-                            <div class="type">Online Consultation · Dr. Achieng</div>
-                            <div class="detail">2:15 PM · Hypertension check</div>
-                        </div>
-                        <span class="status-pill pending">Pending</span>
-                    </div>
-                    <div class="appt-item">
-                        <span class="date">15 Sep</span>
-                        <div class="info">
-                            <div class="type">Physical Visit · Dr. Achieng</div>
-                            <div class="detail">11:00 AM · Routine checkup</div>
-                        </div>
-                        <span class="status-pill confirmed">Confirmed</span>
-                    </div>
-                </div>
-                <div style="margin-top:1rem; display:flex; gap:0.5rem;">
-                    <button class="btn-primary" style="flex:1; text-align:center;">+ Book Appointment</button>
-                    <button class="btn-secondary">View All</button>
-                </div>
-            </div>
-
-            <!-- ===== ACTIVE MEDICATIONS ===== -->
-            <div class="card">
-                <div class="card-title">
-                    <span>💊 Active Medications</span>
-                    <span class="badge">4 active</span>
-                </div>
-                <div class="med-list">
-                    <div class="med-item">
-                        <div>
-                            <div class="name">Metformin</div>
-                            <div class="dosage">500mg · 1 tablet twice daily</div>
-                        </div>
-                        <span class="schedule">With meals</span>
-                    </div>
-                    <div class="med-item" style="border-left-color:#fde047;">
-                        <div>
-                            <div class="name">Amlodipine</div>
-                            <div class="dosage">5mg · 1 tablet daily</div>
-                        </div>
-                        <span class="schedule">Morning</span>
-                    </div>
-                    <div class="med-item" style="border-left-color:#86efac;">
-                        <div>
-                            <div class="name">Atorvastatin</div>
-                            <div class="dosage">20mg · 1 tablet daily</div>
-                        </div>
-                        <span class="schedule">Evening</span>
-                    </div>
-                    <div class="med-item" style="border-left-color:#7dd3fc;">
-                        <div>
-                            <div class="name">Lisinopril</div>
-                            <div class="dosage">10mg · 1 tablet daily</div>
-                        </div>
-                        <span class="schedule">Morning</span>
-                    </div>
-                </div>
-                <div style="margin-top:1rem;">
-                    <button class="btn-secondary" style="width:100%;">Request Refill</button>
-                </div>
-            </div>
-
-            <!-- ===== SYMPTOM LOG ===== -->
-            <div class="card">
-                <div class="card-title">
-                    <span>📝 Log Symptoms</span>
-                    <span class="badge">Track your health</span>
-                </div>
-                <div class="symptom-form">
-                    <textarea placeholder="How are you feeling today? Describe any symptoms, changes, or concerns…"></textarea>
-                    <div class="actions">
-                        <button class="btn-primary">Save Log</button>
-                        <button class="btn-secondary">Send to Doctor</button>
-                    </div>
-                </div>
-                <div class="symptom-history">
-                    <div class="symptom-entry">
-                        <span class="text">Mild headache and fatigue this morning</span>
-                        <span class="time">Today, 8:15 AM</span>
-                    </div>
-                    <div class="symptom-entry">
-                        <span class="text">Slight chest tightness after walking, resolved with rest</span>
-                        <span class="time">Yesterday, 6:30 PM</span>
-                    </div>
-                    <div class="symptom-entry">
-                        <span class="text">Dizziness in the morning, improved after breakfast</span>
-                        <span class="time">2 days ago, 7:45 AM</span>
-                    </div>
-                    <div class="symptom-entry">
-                        <span class="text">Good energy levels, no major concerns</span>
-                        <span class="time">3 days ago, 9:00 AM</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ===== RECENT PRESCRIPTIONS ===== -->
-            <div class="card full-width">
-                <div class="card-title">
-                    <span>📋 Recent Prescriptions</span>
-                    <span class="badge">Last 30 days</span>
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem;">
-                    <div style="background:rgba(0,0,0,0.2); border-radius:14px; padding:1rem;">
-                        <div style="font-weight:600; color:#6ea8fe;">Metformin</div>
-                        <div style="font-size:0.85rem; color:#c6dbfa;">500mg · 1 tablet twice daily</div>
-                        <div style="font-size:0.7rem; color:#4d6f9a; margin-top:0.3rem;">Refills: 2 remaining</div>
-                        <div style="font-size:0.7rem; color:#86efac; margin-top:0.2rem;">● Active</div>
-                    </div>
-                    <div style="background:rgba(0,0,0,0.2); border-radius:14px; padding:1rem;">
-                        <div style="font-weight:600; color:#6ea8fe;">Amlodipine</div>
-                        <div style="font-size:0.85rem; color:#c6dbfa;">5mg · 1 tablet daily</div>
-                        <div style="font-size:0.7rem; color:#4d6f9a; margin-top:0.3rem;">Refills: 1 remaining</div>
-                        <div style="font-size:0.7rem; color:#86efac; margin-top:0.2rem;">● Active</div>
-                    </div>
-                    <div style="background:rgba(0,0,0,0.2); border-radius:14px; padding:1rem;">
-                        <div style="font-weight:600; color:#fde047;">Atorvastatin</div>
-                        <div style="font-size:0.85rem; color:#c6dbfa;">20mg · 1 tablet daily</div>
-                        <div style="font-size:0.7rem; color:#4d6f9a; margin-top:0.3rem;">Refills: 0 remaining</div>
-                        <div style="font-size:0.7rem; color:#fde047; margin-top:0.2rem;">● Refill needed</div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+  <nav class="navbar">
+    <div class="brand">Bosa‑<em>Care</em></div>
+    <div class="nav-links">
+      <a href="#" class="active">Dashboard</a>
+      <a href="#">Appointments</a>
+      <a href="#">Medications</a>
+      <a href="#">Health Records</a>
     </div>
-<script>
-(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="oVPXgPLtelKwSfjpf0tsm";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
-</script>
+    <div class="nav-right">
+      <div class="nav-user"><div class="avatar">JM</div><span>John Matthews</span></div>
+      <button class="btn-outline" onclick="alert('Signing out…')">Sign Out</button>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <div class="greeting">
+      <h1>Good morning, John 👋</h1>
+      <p>Here's your health overview for today. Stay on track with your care plan.</p>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-number">2</div><div class="stat-label">Upcoming Appointments</div></div>
+      <div class="stat-card"><div class="stat-number">4</div><div class="stat-label">Active Medications</div></div>
+      <div class="stat-card"><div class="stat-number">12</div><div class="stat-label">Symptom Logs This Month</div></div>
+      <div class="stat-card"><div class="stat-number">3</div><div class="stat-label">Prescription Refills</div></div>
+    </div>
+
+    <div class="dashboard-grid">
+
+      <div class="card">
+        <div class="card-title"><span>📊 Health Metrics</span><span class="badge">Updated: Today</span></div>
+        <div class="metric-grid">
+          <div class="metric-item"><div class="value">6.2%</div><div class="label">HbA1c</div><span class="status status-good">● On Target</span></div>
+          <div class="metric-item"><div class="value">128/82</div><div class="label">Blood Pressure</div><span class="status status-good">● Normal</span></div>
+          <div class="metric-item"><div class="value">180</div><div class="label">Cholesterol</div><span class="status status-warning">● Borderline</span></div>
+          <div class="metric-item"><div class="value">72</div><div class="label">Heart Rate</div><span class="status status-good">● Normal</span></div>
+        </div>
+        <div style="margin-top:1rem; text-align:center;"><button class="btn-secondary" style="font-size:0.78rem;">View Full Lab Results</button></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span>📅 Upcoming Appointments</span><span class="badge">2 upcoming</span></div>
+        <div class="appt-list">
+          <div class="appt-item"><span class="date">26 Aug</span><div class="info"><div class="type">Physical Visit · Dr. Achieng</div><div class="detail">10:30 AM · Diabetes follow-up</div></div><span class="status-pill confirmed">Confirmed</span></div>
+          <div class="appt-item"><span class="date">2 Sep</span><div class="info"><div class="type">Online Consultation · Dr. Achieng</div><div class="detail">2:15 PM · Hypertension check</div></div><span class="status-pill pending">Pending</span></div>
+          <div class="appt-item"><span class="date">15 Sep</span><div class="info"><div class="type">Physical Visit · Dr. Achieng</div><div class="detail">11:00 AM · Routine checkup</div></div><span class="status-pill confirmed">Confirmed</span></div>
+        </div>
+        <div style="margin-top:1rem; display:flex; gap:0.5rem;">
+          <button class="btn-primary" style="flex:1; text-align:center;">+ Book Appointment</button>
+          <button class="btn-secondary">View All</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span>💊 Active Medications</span><span class="badge">4 active</span></div>
+        <div class="med-list">
+          <div class="med-item"><div><div class="name">Metformin</div><div class="dosage">500mg · 1 tablet twice daily</div></div><span class="schedule">With meals</span></div>
+          <div class="med-item" style="border-left-color:#eab308;"><div><div class="name">Amlodipine</div><div class="dosage">5mg · 1 tablet daily</div></div><span class="schedule">Morning</span></div>
+          <div class="med-item" style="border-left-color:#22c55e;"><div><div class="name">Atorvastatin</div><div class="dosage">20mg · 1 tablet daily</div></div><span class="schedule">Evening</span></div>
+          <div class="med-item" style="border-left-color:#0ea5e9;"><div><div class="name">Lisinopril</div><div class="dosage">10mg · 1 tablet daily</div></div><span class="schedule">Morning</span></div>
+        </div>
+        <div style="margin-top:1rem;"><button class="btn-secondary" style="width:100%;">Request Refill</button></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span>📝 Log Symptoms</span><span class="badge">Track your health</span></div>
+        <div class="symptom-form">
+          <textarea placeholder="How are you feeling today? Describe any symptoms, changes, or concerns…"></textarea>
+          <div class="actions">
+            <button class="btn-primary">Save Log</button>
+            <button class="btn-secondary">Send to Doctor</button>
+          </div>
+        </div>
+        <div class="symptom-history">
+          <div class="symptom-entry"><span class="text">Mild headache and fatigue this morning</span><span class="time">Today, 8:15 AM</span></div>
+          <div class="symptom-entry"><span class="text">Slight chest tightness after walking, resolved with rest</span><span class="time">Yesterday, 6:30 PM</span></div>
+          <div class="symptom-entry"><span class="text">Dizziness in the morning, improved after breakfast</span><span class="time">2 days ago, 7:45 AM</span></div>
+          <div class="symptom-entry"><span class="text">Good energy levels, no major concerns</span><span class="time">3 days ago, 9:00 AM</span></div>
+        </div>
+      </div>
+
+      <div class="card full-width">
+        <div class="card-title"><span>📋 Recent Prescriptions</span><span class="badge">Last 30 days</span></div>
+        <div class="rx-grid">
+          <div class="rx-card"><div class="name">Metformin</div><div class="dosage">500mg · 1 tablet twice daily</div><div class="refills">Refills: 2 remaining</div><div class="state active">● Active</div></div>
+          <div class="rx-card"><div class="name">Amlodipine</div><div class="dosage">5mg · 1 tablet daily</div><div class="refills">Refills: 1 remaining</div><div class="state active">● Active</div></div>
+          <div class="rx-card"><div class="name">Atorvastatin</div><div class="dosage">20mg · 1 tablet daily</div><div class="refills">Refills: 0 remaining</div><div class="state needed">● Refill needed</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 </body>
 </html>
