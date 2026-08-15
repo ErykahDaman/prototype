@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bosa‑Care · Login</title>
+   <title>Bosa‑Care · Login</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <style>
@@ -14,8 +14,8 @@
         }
 
         body {
-            background: #0b132b;
-            color: #e8edf5;
+            background: #f5f0ff;
+            color: #1e1a2b;
             font-family: 'DM Sans', sans-serif;
             min-height: 100vh;
             display: flex;
@@ -24,9 +24,8 @@
             justify-content: center;
             padding: 1.5rem;
             background-image:
-                radial-gradient(ellipse at 15% 85%, rgba(29, 78, 216, 0.15) 0%, transparent 45%),
-                radial-gradient(ellipse at 85% 15%, rgba(56, 189, 248, 0.06) 0%, transparent 40%),
-                linear-gradient(160deg, #060e20 0%, #0f172a 40%, #0b1f3a 100%);
+                radial-gradient(ellipse at 15% 85%, rgba(124, 58, 237, 0.08) 0%, transparent 45%),
+                radial-gradient(ellipse at 85% 15%, rgba(167, 139, 250, 0.05) 0%, transparent 40%);
         }
 
         a {
@@ -49,41 +48,41 @@
         .brand-top .brand-icon {
             width: 48px;
             height: 48px;
-            background: linear-gradient(135deg, #1d4ed8, #0b1f3a);
+            background: linear-gradient(135deg, #7c3aed, #4a1d8a);
             border-radius: 14px;
-            border: 1px solid rgba(56, 189, 248, 0.25);
+            border: 1px solid rgba(124, 58, 237, 0.25);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
             font-weight: 700;
-            color: #38bdf8;
+            color: #fff;
         }
         .brand-top .brand-name {
             font-family: 'Playfair Display', serif;
             font-size: 2rem;
             font-weight: 700;
-            color: #fff;
+            color: #2d1b4e;
             letter-spacing: -0.02em;
         }
         .brand-top .brand-name span {
-            color: #38bdf8;
+            color: #7c3aed;
         }
 
         /* Main card */
         .login-card {
             max-width: 480px;
             width: 100%;
-            background: rgba(13, 24, 45, 0.85);
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(70, 130, 200, 0.2);
+            border: 1px solid rgba(128, 90, 213, 0.12);
             border-radius: 32px;
             padding: 2.5rem 2.2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 25px 50px -12px rgba(124, 58, 237, 0.15);
             transition: border-color 0.3s;
         }
         .login-card:hover {
-            border-color: rgba(56, 189, 248, 0.3);
+            border-color: rgba(124, 58, 237, 0.25);
         }
 
         .login-card .welcome {
@@ -95,10 +94,10 @@
             font-size: 1.8rem;
             font-weight: 600;
             letter-spacing: -0.02em;
-            color: #fff;
+            color: #2d1b4e;
         }
         .login-card .welcome p {
-            color: #8aa9d9;
+            color: #6b5f7e;
             font-size: 0.95rem;
             margin-top: 0.3rem;
         }
@@ -106,30 +105,30 @@
         /* Role toggle */
         .role-toggle {
             display: flex;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(124, 58, 237, 0.06);
             border-radius: 60px;
             padding: 0.3rem;
             margin: 1.8rem 0 1.5rem;
-            border: 1px solid rgba(110, 168, 254, 0.12);
+            border: 1px solid rgba(124, 58, 237, 0.08);
         }
         .role-toggle button {
             flex: 1;
             padding: 0.7rem 0.5rem;
             border-radius: 40px;
             background: transparent;
-            color: #8aa9d9;
+            color: #6b5f7e;
             font-weight: 600;
             font-size: 0.95rem;
             transition: all 0.25s ease;
             letter-spacing: 0.02em;
         }
         .role-toggle button.active {
-            background: linear-gradient(145deg, #1f4e8c, #2a62b0);
+            background: linear-gradient(145deg, #7c3aed, #6d28d9);
             color: white;
-            box-shadow: 0 4px 16px rgba(30, 80, 180, 0.35);
+            box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
         }
         .role-toggle button:hover:not(.active) {
-            color: #c6dbfa;
+            color: #2d1b4e;
         }
 
         /* Form */
@@ -140,7 +139,7 @@
             display: block;
             font-size: 0.78rem;
             font-weight: 600;
-            color: #8aa9d9;
+            color: #6b5f7e;
             margin-bottom: 0.35rem;
             letter-spacing: 0.05em;
             text-transform: uppercase;
@@ -149,21 +148,21 @@
             width: 100%;
             padding: 0.8rem 1.1rem;
             border-radius: 14px;
-            border: 1px solid rgba(70, 130, 200, 0.2);
-            background: rgba(0, 0, 0, 0.3);
-            color: #e8edf5;
+            border: 1.5px solid rgba(128, 90, 213, 0.1);
+            background: #f8f5ff;
+            color: #2d1b4e;
             font-size: 1rem;
             font-family: 'DM Sans', sans-serif;
             transition: all 0.2s;
         }
         .form-group input:focus {
             outline: none;
-            border-color: #4a8ad6;
-            box-shadow: 0 0 0 3px rgba(74, 138, 214, 0.15);
-            background: rgba(0, 0, 0, 0.45);
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.08);
+            background: #fff;
         }
         .form-group input::placeholder {
-            color: #4d6f9a;
+            color: #9a8aaa;
         }
 
         .login-btn {
@@ -172,18 +171,18 @@
             border-radius: 40px;
             font-size: 1rem;
             font-weight: 700;
-            background: linear-gradient(145deg, #1f4e8c, #2a62b0);
-            border: 1px solid #3f7bc9;
+            background: linear-gradient(145deg, #7c3aed, #6d28d9);
+            border: none;
             color: white;
             transition: all 0.25s ease;
-            box-shadow: 0 4px 14px rgba(30, 80, 180, 0.3);
+            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
             letter-spacing: 0.04em;
             margin-top: 0.25rem;
         }
         .login-btn:hover {
-            background: linear-gradient(145deg, #2a62b0, #1f4e8c);
+            background: linear-gradient(145deg, #6d28d9, #5b21b6);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(30, 80, 180, 0.45);
+            box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
         }
         .login-btn:active {
             transform: translateY(0);
@@ -193,27 +192,27 @@
         .demo-hint {
             text-align: center;
             font-size: 0.8rem;
-            color: #4d6f9a;
+            color: #6b5f7e;
             margin-top: 1.5rem;
             padding-top: 1.2rem;
-            border-top: 1px solid rgba(70, 130, 200, 0.1);
+            border-top: 1px solid rgba(128, 90, 213, 0.08);
             line-height: 2;
         }
         .demo-hint .role-label {
-            color: #8aa9d9;
+            color: #2d1b4e;
             font-weight: 600;
         }
         .demo-hint code {
-            background: rgba(0, 0, 0, 0.35);
+            background: rgba(124, 58, 237, 0.06);
             padding: 0.15rem 0.7rem;
             border-radius: 8px;
             font-size: 0.75rem;
-            color: #8bb9ff;
+            color: #7c3aed;
             font-family: 'DM Sans', monospace;
-            border: 1px solid rgba(110, 168, 254, 0.08);
+            border: 1px solid rgba(124, 58, 237, 0.08);
         }
         .demo-hint .sep {
-            color: #2f5080;
+            color: #9a8aaa;
             margin: 0 0.3rem;
         }
         .demo-hint .demo-row {
@@ -238,22 +237,22 @@
         }
         #loginStatus.success {
             display: block;
-            background: rgba(34, 197, 94, 0.12);
-            border: 1px solid rgba(34, 197, 94, 0.2);
-            color: #86efac;
+            background: rgba(34, 197, 94, 0.08);
+            border: 1px solid rgba(34, 197, 94, 0.15);
+            color: #16a34a;
         }
         #loginStatus.error {
             display: block;
-            background: rgba(239, 68, 68, 0.12);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
+            background: rgba(239, 68, 68, 0.06);
+            border: 1px solid rgba(239, 68, 68, 0.12);
+            color: #dc2626;
         }
 
         /* Footer */
         .footer-note {
             margin-top: 2rem;
             font-size: 0.7rem;
-            color: #2f5080;
+            color: #9a8aaa;
             text-align: center;
             letter-spacing: 0.04em;
         }
