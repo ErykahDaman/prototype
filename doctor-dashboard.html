@@ -117,6 +117,33 @@
   .activity-item .text{flex:1;color:var(--ink);}
   .activity-item .time{font-size:0.72rem;color:var(--ink-faint);white-space:nowrap;}
 
+  /* Modal */
+  .modal-overlay{position:fixed;inset:0;background:rgba(28,20,48,0.45);backdrop-filter:blur(3px);
+    display:none;align-items:center;justify-content:center;z-index:1000;padding:1.5rem;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--surface);border-radius:var(--radius-lg);padding:1.8rem;max-width:440px;width:100%;
+    box-shadow:0 30px 70px -15px rgba(28,20,48,0.35);border:1px solid var(--line);animation:modalIn .18s var(--ease);}
+  @keyframes modalIn{from{opacity:0;transform:translateY(8px) scale(.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+  .modal h3{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--purple-950);margin-bottom:1rem;}
+  .modal p.sub{font-size:0.85rem;color:var(--ink-soft);margin:-0.6rem 0 1rem;}
+  .modal .field{margin-bottom:1rem;}
+  .modal .field label{display:block;font-size:0.72rem;font-weight:700;color:var(--ink-soft);margin-bottom:0.35rem;
+    text-transform:uppercase;letter-spacing:0.06em;}
+  .modal .field input,.modal .field select,.modal .field textarea{width:100%;padding:0.7rem 0.9rem;border-radius:var(--radius-sm);
+    border:1.5px solid var(--line);background:var(--purple-50);color:var(--purple-950);font-size:0.92rem;
+    font-family:'DM Sans',sans-serif;transition:0.15s;}
+  .modal .field input:focus,.modal .field select:focus,.modal .field textarea:focus{outline:none;border-color:var(--purple-500);
+    box-shadow:0 0 0 3px rgba(124,58,237,0.10);background:#fff;}
+  .modal .field-row{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;}
+  .modal .modal-actions{display:flex;gap:0.7rem;margin-top:0.4rem;}
+  .modal .modal-actions button{flex:1;}
+
+  /* Toast */
+  .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--purple-950);
+    color:#fff;padding:0.8rem 1.5rem;border-radius:var(--radius-pill);font-size:0.88rem;font-weight:500;
+    box-shadow:0 15px 40px rgba(28,20,48,0.35);z-index:1100;opacity:0;pointer-events:none;transition:all .25s var(--ease);}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
   @media (max-width:1024px){.dashboard-grid{grid-template-columns:1fr;}.full-width{grid-column:1;}}
   @media (max-width:768px){
     .navbar{flex-direction:column;align-items:stretch;padding:0.8rem 1rem;}
@@ -158,18 +185,18 @@
       <div class="card">
         <div class="card-title"><span>👥 Recent Patients</span><span class="badge">24 total</span></div>
         <div class="patient-list">
-          <div class="patient-item"><div class="info"><div class="avatar-sm">JM</div><div><div class="name">John Matthews</div><div class="detail">Type 2 Diabetes · Last visit: 12 Aug</div></div></div><button class="btn-secondary" style="padding:0.3rem 0.9rem;font-size:0.72rem;">View</button></div>
-          <div class="patient-item"><div class="info"><div class="avatar-sm">SJ</div><div><div class="name">Sarah Johnson</div><div class="detail">Hypertension · Last visit: 15 Aug</div></div></div><button class="btn-secondary" style="padding:0.3rem 0.9rem;font-size:0.72rem;">View</button></div>
-          <div class="patient-item"><div class="info"><div class="avatar-sm">PW</div><div><div class="name">Peter Williams</div><div class="detail">HIV Care · Last visit: 10 Aug</div></div></div><button class="btn-secondary" style="padding:0.3rem 0.9rem;font-size:0.72rem;">View</button></div>
-          <div class="patient-item"><div class="info"><div class="avatar-sm">EN</div><div><div class="name">Esther Njoroge</div><div class="detail">Anaemia · Last visit: 18 Aug</div></div></div><button class="btn-secondary" style="padding:0.3rem 0.9rem;font-size:0.72rem;">View</button></div>
-          <div class="patient-item"><div class="info"><div class="avatar-sm">MO</div><div><div class="name">Michael Ochieng</div><div class="detail">Cancer Care · Last visit: 5 Aug</div></div></div><button class="btn-secondary" style="padding:0.3rem 0.9rem;font-size:0.72rem;">View</button></div>
+          <div class="patient-item"><div class="info"><div class="avatar-sm">JM</div><div><div class="name">John Matthews</div><div class="detail">Type 2 Diabetes · Last visit: 12 Aug</div></div></div><button class="btn-secondary" style="padding:0.3rem 0.9rem;font-size:0.72rem;" onclick="viewPatient('John Matthews','Type 2 Diabetes','12 Aug')">View</button></div>
+          <div class="patient-item"><div class="info"><div class="avatar-sm">SJ</div><div><div class="name">Sarah Johnson</div><div class="detail">Hypertension · Last visit: 15 Aug</div></div></div><button class="btn-secondary" style="padding:0.3rem 0.9rem;font-size:0.72rem;" onclick="viewPatient('Sarah Johnson','Hypertension','15 Aug')">View</button></div>
+          <div class="patient-item"><div class="info"><div class="avatar-sm">PW</div><div><div class="name">Peter Williams</div><div class="detail">HIV Care · Last visit: 10 Aug</div></div></div><button class="btn-secondary" style="padding:0.3rem 0.9rem;font-size:0.72rem;" onclick="viewPatient('Peter Williams','HIV Care','10 Aug')">View</button></div>
+          <div class="patient-item"><div class="info"><div class="avatar-sm">EN</div><div><div class="name">Esther Njoroge</div><div class="detail">Anaemia · Last visit: 18 Aug</div></div></div><button class="btn-secondary" style="padding:0.3rem 0.9rem;font-size:0.72rem;" onclick="viewPatient('Esther Njoroge','Anaemia','18 Aug')">View</button></div>
+          <div class="patient-item"><div class="info"><div class="avatar-sm">MO</div><div><div class="name">Michael Ochieng</div><div class="detail">Cancer Care · Last visit: 5 Aug</div></div></div><button class="btn-secondary" style="padding:0.3rem 0.9rem;font-size:0.72rem;" onclick="viewPatient('Michael Ochieng','Cancer Care','5 Aug')">View</button></div>
         </div>
-        <div style="margin-top:1rem;"><button class="btn-secondary" style="width:100%;">View All Patients</button></div>
+        <div style="margin-top:1rem;"><button class="btn-secondary" style="width:100%;" onclick="showToast('Opening full patient roster…')">View All Patients</button></div>
       </div>
 
       <div class="card">
-        <div class="card-title"><span>📅 Today's Appointments</span><span class="badge">8 total</span></div>
-        <div class="patient-list" style="max-height:300px;">
+        <div class="card-title"><span>📅 Today's Appointments</span><span class="badge" id="apptCountBadge">8 total</span></div>
+        <div class="patient-list" style="max-height:300px;" id="apptList">
           <div class="appt-item"><span class="time">09:00</span><div class="patient"><div class="name">John Matthews</div><div class="type">Physical Visit · Diabetes check</div></div><span class="status-pill confirmed">Confirmed</span></div>
           <div class="appt-item"><span class="time">10:30</span><div class="patient"><div class="name">Sarah Johnson</div><div class="type">Online Consultation · Hypertension</div></div><span class="status-pill pending">Pending</span></div>
           <div class="appt-item"><span class="time">11:45</span><div class="patient"><div class="name">Peter Williams</div><div class="type">Physical Visit · HIV follow-up</div></div><span class="status-pill confirmed">Confirmed</span></div>
@@ -177,34 +204,34 @@
           <div class="appt-item"><span class="time">14:30</span><div class="patient"><div class="name">Michael Ochieng</div><div class="type">Physical Visit · Cancer follow-up</div></div><span class="status-pill confirmed">Confirmed</span></div>
         </div>
         <div style="margin-top:1rem; display:flex; gap:0.5rem;">
-          <button class="btn-primary" style="flex:1; text-align:center;">+ Add Appointment</button>
-          <button class="btn-secondary">View All</button>
+          <button class="btn-primary" style="flex:1; text-align:center;" onclick="openApptModal()">+ Add Appointment</button>
+          <button class="btn-secondary" onclick="showToast('Showing full appointment schedule…')">View All</button>
         </div>
       </div>
 
       <div class="card full-width">
         <div class="card-title"><span>💊 Send Prescription</span><span class="badge">Quick action</span></div>
-        <div class="rx-form">
+        <form class="rx-form" id="rxForm" onsubmit="submitPrescription(event)">
           <div class="rx-row">
-            <div class="rx-field"><label>Patient</label><select><option value="">Select patient</option><option>John Matthews</option><option>Sarah Johnson</option><option>Peter Williams</option><option>Esther Njoroge</option><option>Michael Ochieng</option></select></div>
-            <div class="rx-field"><label>Medication</label><input type="text" placeholder="e.g. Amlodipine 5mg" /></div>
+            <div class="rx-field"><label>Patient</label><select id="rxPatient" required><option value="">Select patient</option><option>John Matthews</option><option>Sarah Johnson</option><option>Peter Williams</option><option>Esther Njoroge</option><option>Michael Ochieng</option></select></div>
+            <div class="rx-field"><label>Medication</label><input type="text" id="rxMedication" placeholder="e.g. Amlodipine 5mg" required /></div>
           </div>
           <div class="rx-row">
-            <div class="rx-field"><label>Dosage</label><input type="text" placeholder="e.g. 1 tablet daily" /></div>
-            <div class="rx-field"><label>Duration</label><input type="text" placeholder="e.g. 30 days" /></div>
+            <div class="rx-field"><label>Dosage</label><input type="text" id="rxDosage" placeholder="e.g. 1 tablet daily" required /></div>
+            <div class="rx-field"><label>Duration</label><input type="text" id="rxDuration" placeholder="e.g. 30 days" required /></div>
           </div>
           <div class="rx-row">
-            <div class="rx-field"><label>Refills</label><select><option value="0">No refills</option><option value="1">1 refill</option><option value="2">2 refills</option><option value="3">3 refills</option></select></div>
-            <div class="rx-field"><label>Instructions</label><input type="text" placeholder="e.g. Take with food" /></div>
+            <div class="rx-field"><label>Refills</label><select id="rxRefills"><option value="0">No refills</option><option value="1">1 refill</option><option value="2">2 refills</option><option value="3">3 refills</option></select></div>
+            <div class="rx-field"><label>Instructions</label><input type="text" id="rxInstructions" placeholder="e.g. Take with food" /></div>
           </div>
-          <button class="btn-primary" style="width:fit-content; padding:0.75rem 2rem;">Send Prescription</button>
-        </div>
+          <button type="submit" class="btn-primary" style="width:fit-content; padding:0.75rem 2rem;">Send Prescription</button>
+        </form>
       </div>
 
       <div class="card full-width">
         <div class="card-title"><span>🕐 Recent Activity</span><span class="badge">Last 24 hours</span></div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem 2rem;">
-          <div>
+          <div id="activityColumn">
             <div class="activity-item"><span class="icon">💊</span><span class="text">Prescribed Amlodipine to Sarah Johnson</span><span class="time">2h ago</span></div>
             <div class="activity-item"><span class="icon">📅</span><span class="text">Confirmed appointment with John Matthews</span><span class="time">3h ago</span></div>
             <div class="activity-item"><span class="icon">📋</span><span class="text">Reviewed lab results for Peter Williams</span><span class="time">5h ago</span></div>
@@ -221,6 +248,129 @@
 
     </div>
   </div>
+
+  <!-- Add Appointment Modal -->
+  <div class="modal-overlay" id="apptOverlay" onclick="if(event.target===this) closeApptModal()">
+    <div class="modal">
+      <h3>Add appointment</h3>
+      <form id="apptForm" onsubmit="submitAppt(event)">
+        <div class="field">
+          <label for="apptPatient">Patient</label>
+          <select id="apptPatient" required>
+            <option value="">Select patient</option>
+            <option>John Matthews</option><option>Sarah Johnson</option><option>Peter Williams</option>
+            <option>Esther Njoroge</option><option>Michael Ochieng</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="apptTime">Time</label><input type="time" id="apptTime" required /></div>
+          <div class="field">
+            <label for="apptType">Type</label>
+            <select id="apptType"><option>Physical Visit</option><option>Online Consultation</option></select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="apptReason">Reason</label>
+          <input type="text" id="apptReason" placeholder="e.g. Routine checkup" required />
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" onclick="closeApptModal()">Cancel</button>
+          <button type="submit" class="btn-primary">Add to schedule</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Patient View Modal -->
+  <div class="modal-overlay" id="patientOverlay" onclick="if(event.target===this) closePatientModal()">
+    <div class="modal">
+      <h3 id="patientModalName">Patient</h3>
+      <p class="sub" id="patientModalDetail"></p>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" onclick="closePatientModal()">Close</button>
+        <button type="button" class="btn-primary" onclick="closePatientModal(); showToast('Opening full chart…')">Open full chart</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ===== Toast =====
+    let toastTimer;
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+    }
+
+    // ===== Add Appointment =====
+    function openApptModal() {
+      document.getElementById('apptForm').reset();
+      document.getElementById('apptOverlay').classList.add('open');
+    }
+    function closeApptModal() {
+      document.getElementById('apptOverlay').classList.remove('open');
+    }
+    function submitAppt(e) {
+      e.preventDefault();
+      const patient = document.getElementById('apptPatient').value;
+      const time = document.getElementById('apptTime').value;
+      const type = document.getElementById('apptType').value;
+      const reason = document.getElementById('apptReason').value.trim();
+      if (!patient || !time || !reason) return;
+
+      const timeLabel = new Date('2000-01-01T' + time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+
+      const item = document.createElement('div');
+      item.className = 'appt-item';
+      item.innerHTML = `<span class="time">${timeLabel}</span>
+        <div class="patient"><div class="name">${patient}</div><div class="type">${type} · ${reason}</div></div>
+        <span class="status-pill pending">Pending</span>`;
+      document.getElementById('apptList').prepend(item);
+
+      const badge = document.getElementById('apptCountBadge');
+      const n = parseInt(badge.textContent, 10) + 1;
+      badge.textContent = n + ' total';
+
+      closeApptModal();
+      showToast(`Appointment added for ${patient} at ${timeLabel}`);
+    }
+
+    // ===== View Patient =====
+    function viewPatient(name, condition, lastVisit) {
+      document.getElementById('patientModalName').textContent = name;
+      document.getElementById('patientModalDetail').textContent = `${condition} · Last visit: ${lastVisit}`;
+      document.getElementById('patientOverlay').classList.add('open');
+    }
+    function closePatientModal() {
+      document.getElementById('patientOverlay').classList.remove('open');
+    }
+
+    // ===== Send Prescription =====
+    function submitPrescription(e) {
+      e.preventDefault();
+      const patient = document.getElementById('rxPatient').value;
+      const medication = document.getElementById('rxMedication').value.trim();
+      const dosage = document.getElementById('rxDosage').value.trim();
+      const duration = document.getElementById('rxDuration').value.trim();
+      if (!patient || !medication || !dosage || !duration) return;
+
+      const entry = document.createElement('div');
+      entry.className = 'activity-item';
+      entry.innerHTML = `<span class="icon">💊</span><span class="text">Prescribed ${medication} to ${patient}</span><span class="time">Just now</span>`;
+      document.getElementById('activityColumn').prepend(entry);
+
+      document.getElementById('rxForm').reset();
+      showToast(`Prescription for ${medication} sent to ${patient}`);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { closeApptModal(); closePatientModal(); }
+    });
+  </script>
 
 </body>
   <script>
