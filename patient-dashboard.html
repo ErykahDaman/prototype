@@ -138,6 +138,32 @@
   .rx-card .state.active{color:var(--good);}
   .rx-card .state.needed{color:var(--warn);}
 
+  /* Modal */
+  .modal-overlay{position:fixed;inset:0;background:rgba(28,20,48,0.45);backdrop-filter:blur(3px);
+    display:none;align-items:center;justify-content:center;z-index:1000;padding:1.5rem;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--surface);border-radius:var(--radius-lg);padding:1.8rem;max-width:440px;width:100%;
+    box-shadow:0 30px 70px -15px rgba(28,20,48,0.35);border:1px solid var(--line);animation:modalIn .18s var(--ease);}
+  @keyframes modalIn{from{opacity:0;transform:translateY(8px) scale(.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+  .modal h3{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--purple-950);margin-bottom:1rem;}
+  .modal .field{margin-bottom:1rem;}
+  .modal .field label{display:block;font-size:0.72rem;font-weight:700;color:var(--ink-soft);margin-bottom:0.35rem;
+    text-transform:uppercase;letter-spacing:0.06em;}
+  .modal .field input,.modal .field select,.modal .field textarea{width:100%;padding:0.7rem 0.9rem;border-radius:var(--radius-sm);
+    border:1.5px solid var(--line);background:var(--purple-50);color:var(--purple-950);font-size:0.92rem;
+    font-family:'DM Sans',sans-serif;transition:0.15s;}
+  .modal .field input:focus,.modal .field select:focus,.modal .field textarea:focus{outline:none;border-color:var(--purple-500);
+    box-shadow:0 0 0 3px rgba(124,58,237,0.10);background:#fff;}
+  .modal .field-row{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;}
+  .modal .modal-actions{display:flex;gap:0.7rem;margin-top:0.4rem;}
+  .modal .modal-actions button{flex:1;}
+
+  /* Toast */
+  .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--purple-950);
+    color:#fff;padding:0.8rem 1.5rem;border-radius:var(--radius-pill);font-size:0.88rem;font-weight:500;
+    box-shadow:0 15px 40px rgba(28,20,48,0.35);z-index:1100;opacity:0;pointer-events:none;transition:all .25s var(--ease);}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
   @media (max-width:1024px){.dashboard-grid{grid-template-columns:1fr;}.full-width{grid-column:1;}.rx-grid{grid-template-columns:1fr 1fr;}}
   @media (max-width:768px){
     .navbar{flex-direction:column;align-items:stretch;padding:0.8rem 1rem;}
@@ -175,9 +201,9 @@
     </div>
 
     <div class="stats-row">
-      <div class="stat-card"><div class="stat-number">2</div><div class="stat-label">Upcoming Appointments</div></div>
+      <div class="stat-card"><div class="stat-number" id="upcomingCount">2</div><div class="stat-label">Upcoming Appointments</div></div>
       <div class="stat-card"><div class="stat-number">4</div><div class="stat-label">Active Medications</div></div>
-      <div class="stat-card"><div class="stat-number">12</div><div class="stat-label">Symptom Logs This Month</div></div>
+      <div class="stat-card"><div class="stat-number" id="symptomLogCount">12</div><div class="stat-label">Symptom Logs This Month</div></div>
       <div class="stat-card"><div class="stat-number">3</div><div class="stat-label">Prescription Refills</div></div>
     </div>
 
@@ -191,19 +217,19 @@
           <div class="metric-item"><div class="value">180</div><div class="label">Cholesterol</div><span class="status status-warning">● Borderline</span></div>
           <div class="metric-item"><div class="value">72</div><div class="label">Heart Rate</div><span class="status status-good">● Normal</span></div>
         </div>
-        <div style="margin-top:1rem; text-align:center;"><button class="btn-secondary" style="font-size:0.78rem;">View Full Lab Results</button></div>
+        <div style="margin-top:1rem; text-align:center;"><button class="btn-secondary" style="font-size:0.78rem;" onclick="showToast('Full lab report opening…')">View Full Lab Results</button></div>
       </div>
 
       <div class="card">
-        <div class="card-title"><span>📅 Upcoming Appointments</span><span class="badge">2 upcoming</span></div>
-        <div class="appt-list">
+        <div class="card-title"><span>📅 Upcoming Appointments</span><span class="badge" id="apptCountBadge">2 upcoming</span></div>
+        <div class="appt-list" id="apptList">
           <div class="appt-item"><span class="date">26 Aug</span><div class="info"><div class="type">Physical Visit · Dr. Achieng</div><div class="detail">10:30 AM · Diabetes follow-up</div></div><span class="status-pill confirmed">Confirmed</span></div>
           <div class="appt-item"><span class="date">2 Sep</span><div class="info"><div class="type">Online Consultation · Dr. Achieng</div><div class="detail">2:15 PM · Hypertension check</div></div><span class="status-pill pending">Pending</span></div>
           <div class="appt-item"><span class="date">15 Sep</span><div class="info"><div class="type">Physical Visit · Dr. Achieng</div><div class="detail">11:00 AM · Routine checkup</div></div><span class="status-pill confirmed">Confirmed</span></div>
         </div>
         <div style="margin-top:1rem; display:flex; gap:0.5rem;">
-          <button class="btn-primary" style="flex:1; text-align:center;">+ Book Appointment</button>
-          <button class="btn-secondary">View All</button>
+          <button class="btn-primary" style="flex:1; text-align:center;" onclick="openBookingModal()">+ Book Appointment</button>
+          <button class="btn-secondary" onclick="showToast('Showing full appointment history…')">View All</button>
         </div>
       </div>
 
@@ -215,19 +241,19 @@
           <div class="med-item" style="border-left-color:#22c55e;"><div><div class="name">Atorvastatin</div><div class="dosage">20mg · 1 tablet daily</div></div><span class="schedule">Evening</span></div>
           <div class="med-item" style="border-left-color:#0ea5e9;"><div><div class="name">Lisinopril</div><div class="dosage">10mg · 1 tablet daily</div></div><span class="schedule">Morning</span></div>
         </div>
-        <div style="margin-top:1rem;"><button class="btn-secondary" style="width:100%;">Request Refill</button></div>
+        <div style="margin-top:1rem;"><button class="btn-secondary" style="width:100%;" onclick="requestRefill()">Request Refill</button></div>
       </div>
 
       <div class="card">
         <div class="card-title"><span>📝 Log Symptoms</span><span class="badge">Track your health</span></div>
         <div class="symptom-form">
-          <textarea placeholder="How are you feeling today? Describe any symptoms, changes, or concerns…"></textarea>
+          <textarea id="symptomInput" placeholder="How are you feeling today? Describe any symptoms, changes, or concerns…"></textarea>
           <div class="actions">
-            <button class="btn-primary">Save Log</button>
-            <button class="btn-secondary">Send to Doctor</button>
+            <button class="btn-primary" onclick="saveSymptomLog(false)">Save Log</button>
+            <button class="btn-secondary" onclick="saveSymptomLog(true)">Send to Doctor</button>
           </div>
         </div>
-        <div class="symptom-history">
+        <div class="symptom-history" id="symptomHistory">
           <div class="symptom-entry"><span class="text">Mild headache and fatigue this morning</span><span class="time">Today, 8:15 AM</span></div>
           <div class="symptom-entry"><span class="text">Slight chest tightness after walking, resolved with rest</span><span class="time">Yesterday, 6:30 PM</span></div>
           <div class="symptom-entry"><span class="text">Dizziness in the morning, improved after breakfast</span><span class="time">2 days ago, 7:45 AM</span></div>
@@ -246,6 +272,123 @@
 
     </div>
   </div>
+
+  <!-- Book Appointment Modal -->
+  <div class="modal-overlay" id="bookingOverlay" onclick="if(event.target===this) closeBookingModal()">
+    <div class="modal">
+      <h3>Book an appointment</h3>
+      <form id="bookingForm" onsubmit="submitBooking(event)">
+        <div class="field-row">
+          <div class="field">
+            <label for="apptDate">Date</label>
+            <input type="date" id="apptDate" required />
+          </div>
+          <div class="field">
+            <label for="apptTime">Time</label>
+            <input type="time" id="apptTime" required />
+          </div>
+        </div>
+        <div class="field">
+          <label for="apptType">Visit type</label>
+          <select id="apptType">
+            <option>Physical Visit</option>
+            <option>Online Consultation</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="apptReason">Reason for visit</label>
+          <input type="text" id="apptReason" placeholder="e.g. Diabetes follow-up" required />
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" onclick="closeBookingModal()">Cancel</button>
+          <button type="submit" class="btn-primary">Confirm booking</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ===== Toast =====
+    let toastTimer;
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+    }
+
+    // ===== Book Appointment =====
+    function openBookingModal() {
+      document.getElementById('bookingForm').reset();
+      document.getElementById('bookingOverlay').classList.add('open');
+    }
+    function closeBookingModal() {
+      document.getElementById('bookingOverlay').classList.remove('open');
+    }
+
+    function submitBooking(e) {
+      e.preventDefault();
+      const date = document.getElementById('apptDate').value;
+      const time = document.getElementById('apptTime').value;
+      const type = document.getElementById('apptType').value;
+      const reason = document.getElementById('apptReason').value.trim();
+      if (!date || !time || !reason) return;
+
+      const dateObj = new Date(date + 'T00:00:00');
+      const dateLabel = dateObj.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+      const timeLabel = new Date('2000-01-01T' + time).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+      const item = document.createElement('div');
+      item.className = 'appt-item';
+      item.innerHTML = `<span class="date">${dateLabel}</span>
+        <div class="info">
+          <div class="type">${type} · Dr. Achieng</div>
+          <div class="detail">${timeLabel} · ${reason}</div>
+        </div>
+        <span class="status-pill pending">Pending</span>`;
+      document.getElementById('apptList').prepend(item);
+
+      const countEl = document.getElementById('upcomingCount');
+      const badgeEl = document.getElementById('apptCountBadge');
+      const newCount = parseInt(countEl.textContent, 10) + 1;
+      countEl.textContent = newCount;
+      badgeEl.textContent = newCount + ' upcoming';
+
+      closeBookingModal();
+      showToast(`Appointment requested for ${dateLabel} at ${timeLabel}`);
+    }
+
+    // ===== Request Refill =====
+    function requestRefill() {
+      showToast('Refill requested — your pharmacy will confirm shortly.');
+    }
+
+    // ===== Symptom Log =====
+    function saveSymptomLog(sendToDoctor) {
+      const input = document.getElementById('symptomInput');
+      const text = input.value.trim();
+      if (!text) { showToast('Write a quick note before saving.'); return; }
+
+      const entry = document.createElement('div');
+      entry.className = 'symptom-entry';
+      entry.innerHTML = `<span class="text">${text}</span><span class="time">Just now${sendToDoctor ? ' · sent to Dr. Achieng' : ''}</span>`;
+      document.getElementById('symptomHistory').prepend(entry);
+      input.value = '';
+
+      const countEl = document.getElementById('symptomLogCount');
+      countEl.textContent = parseInt(countEl.textContent, 10) + 1;
+
+      showToast(sendToDoctor ? 'Log saved and sent to Dr. Achieng.' : 'Symptom log saved.');
+    }
+
+    // ===== Escape key closes modal =====
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeBookingModal();
+    });
+  </script>
 
 </body>
   <script>
