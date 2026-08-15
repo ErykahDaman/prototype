@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bosa‑Care · Patient Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0b132b;
+            color: #e8edf5;
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.9rem 2rem;
+            background: rgba(11, 19, 43, 0.85);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(70, 130, 200, 0.15);
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+        .brand span {
+            color: #6ea8fe;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.8rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #b6c9e6;
+        }
+        .nav-links a {
+            transition: 0.15s;
+        }
+        .nav-links a:hover {
+            color: #8bb9ff;
+        }
+        .nav-links a.active {
+            color: #6ea8fe;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.9rem;
+            color: #b6c9e6;
+        }
+        .nav-user .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #1f4e8c, #2a62b0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(110, 168, 254, 0.4);
+            padding: 0.45rem 1.3rem;
+            border-radius: 40px;
+            color: #c6dbfa;
+            font-weight: 500;
+            transition: 0.2s;
+            font-size: 0.85rem;
+        }
+        .btn-outline:hover {
+            background: rgba(110, 168, 254, 0.08);
+            border-color: #6ea8fe;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-primary {
+            background: linear-gradient(145deg, #1f4e8c, #2a62b0);
+            border: 1px solid #3f7bc9;
+            padding: 0.6rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 600;
+            color: white;
+            transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(30, 80, 180, 0.25);
+            font-size: 0.85rem;
+        }
+        .btn-primary:hover {
+            background: #2a62b0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 80, 180, 0.35);
+        }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 0.55rem 1.2rem;
+            border-radius: 40px;
+            color: #d3def5;
+            font-weight: 500;
+            transition: 0.15s;
+            font-size: 0.85rem;
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .btn-success {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            color: #86efac;
+            font-weight: 600;
+            font-size: 0.75rem;
+            transition: 0.15s;
+        }
+        .btn-success:hover {
+            background: rgba(34, 197, 94, 0.25);
+        }
+        .btn-warning {
+            background: rgba(234, 179, 8, 0.12);
+            border: 1px solid rgba(234, 179, 8, 0.25);
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            color: #fde047;
+            font-weight: 600;
+            font-size: 0.75rem;
+            transition: 0.15s;
+        }
+        .btn-warning:hover {
+            background: rgba(234, 179, 8, 0.2);
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+        }
+
+        /* ===== GREETING ===== */
+        .greeting {
+            margin-bottom: 2rem;
+        }
+        .greeting h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        .greeting p {
+            color: #8aa9d9;
+            font-size: 1rem;
+            margin-top: 0.2rem;
+        }
+
+        /* ===== STATS ROW ===== */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: rgba(20, 40, 70, 0.6);
+            border: 1px solid rgba(70, 130, 200, 0.15);
+            border-radius: 20px;
+            padding: 1.2rem 1.5rem;
+            backdrop-filter: blur(6px);
+            transition: 0.2s;
+        }
+        .stat-card:hover {
+            border-color: rgba(70, 130, 200, 0.3);
+        }
+        .stat-card .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #6ea8fe;
+            line-height: 1.1;
+        }
+        .stat-card .stat-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #8aa9d9;
+            margin-top: 0.2rem;
+        }
+
+        /* ===== GRID ===== */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: rgba(20, 40, 70, 0.6);
+            border: 1px solid rgba(70, 130, 200, 0.15);
+            border-radius: 20px;
+            padding: 1.5rem;
+            backdrop-filter: blur(6px);
+            transition: 0.2s;
+        }
+        .card:hover {
+            border-color: rgba(70, 130, 200, 0.25);
+        }
+        .card-title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #8aa9d9;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .card-title .badge {
+            background: rgba(110, 168, 254, 0.12);
+            padding: 0.15rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            color: #6ea8fe;
+        }
+
+        /* ===== HEALTH METRICS ===== */
+        .metric-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .metric-item {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 14px;
+            padding: 1rem;
+            text-align: center;
+        }
+        .metric-item .value {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #6ea8fe;
+        }
+        .metric-item .label {
+            font-size: 0.7rem;
+            color: #8aa9d9;
+            margin-top: 0.2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .metric-item .status {
+            font-size: 0.65rem;
+            margin-top: 0.3rem;
+            padding: 0.15rem 0.6rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        .status-good {
+            background: rgba(34, 197, 94, 0.15);
+            color: #86efac;
+        }
+        .status-warning {
+            background: rgba(234, 179, 8, 0.12);
+            color: #fde047;
+        }
+        .status-danger {
+            background: rgba(239, 68, 68, 0.12);
+            color: #fca5a5;
+        }
+
+        /* ===== APPOINTMENTS LIST ===== */
+        .appt-list {
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .appt-list::-webkit-scrollbar {
+            width: 3px;
+        }
+        .appt-list::-webkit-scrollbar-thumb {
+            background: #2f5080;
+            border-radius: 6px;
+        }
+        .appt-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.7rem 0.5rem;
+            border-bottom: 1px solid rgba(70, 130, 200, 0.06);
+        }
+        .appt-item .date {
+            font-weight: 600;
+            color: #6ea8fe;
+            font-size: 0.8rem;
+            min-width: 80px;
+        }
+        .appt-item .info {
+            flex: 1;
+            margin: 0 0.8rem;
+        }
+        .appt-item .info .type {
+            font-weight: 500;
+        }
+        .appt-item .info .detail {
+            font-size: 0.75rem;
+            color: #8aa9d9;
+        }
+        .status-pill {
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .status-pill.confirmed {
+            background: rgba(34, 197, 94, 0.15);
+            color: #86efac;
+        }
+        .status-pill.pending {
+            background: rgba(234, 179, 8, 0.12);
+            color: #fde047;
+        }
+        .status-pill.completed {
+            background: rgba(110, 168, 254, 0.12);
+            color: #7dd3fc;
+        }
+        .status-pill.cancelled {
+            background: rgba(239, 68, 68, 0.12);
+            color: #fca5a5;
+        }
+
+        /* ===== MEDICATION LIST ===== */
+        .med-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .med-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.7rem 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border-left: 3px solid #6ea8fe;
+        }
+        .med-item .name {
+            font-weight: 500;
+        }
+        .med-item .dosage {
+            font-size: 0.8rem;
+            color: #8aa9d9;
+        }
+        .med-item .schedule {
+            font-size: 0.7rem;
+            color: #6ea8fe;
+            background: rgba(110, 168, 254, 0.1);
+            padding: 0.15rem 0.7rem;
+            border-radius: 20px;
+        }
+
+        /* ===== SYMPTOM LOG ===== */
+        .symptom-form textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 14px;
+            border: 1px solid rgba(70, 130, 200, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            color: #e8edf5;
+            font-size: 0.9rem;
+            font-family: 'DM Sans', sans-serif;
+            resize: vertical;
+            min-height: 80px;
+            transition: 0.15s;
+        }
+        .symptom-form textarea:focus {
+            outline: none;
+            border-color: #4a8ad6;
+            box-shadow: 0 0 0 3px rgba(74, 138, 214, 0.15);
+        }
+        .symptom-form textarea::placeholder {
+            color: #4d6f9a;
+        }
+        .symptom-form .actions {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .symptom-history {
+            margin-top: 1rem;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        .symptom-history::-webkit-scrollbar {
+            width: 3px;
+        }
+        .symptom-history::-webkit-scrollbar-thumb {
+            background: #2f5080;
+            border-radius: 6px;
+        }
+        .symptom-entry {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(70, 130, 200, 0.06);
+            font-size: 0.85rem;
+        }
+        .symptom-entry .text {
+            color: #c6dbfa;
+        }
+        .symptom-entry .time {
+            font-size: 0.7rem;
+            color: #4d6f9a;
+            float: right;
+        }
+
+        /* ===== FULL WIDTH ===== */
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .full-width {
+                grid-column: 1;
+            }
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 0.8rem 1rem;
+            }
+            .nav-links {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            .nav-right {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .container {
+                padding: 1rem;
+            }
+            .stats-row {
+                grid-template-columns: 1fr 1fr;
+            }
+            .metric-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 480px) {
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+            .metric-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <div class="brand">Bosa‑<span>Care</span></div>
+        <div class="nav-links">
+            <a href="#" class="active">Dashboard</a>
+            <a href="#">Appointments</a>
+            <a href="#">Medications</a>
+            <a href="#">Health Records</a>
+        </div>
+        <div class="nav-right">
+            <div class="nav-user">
+                <div class="avatar">JM</div>
+                <span>John Matthews</span>
+            </div>
+            <button class="btn-outline" onclick="alert('Signing out…')">Sign Out</button>
+        </div>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="container">
+
+        <!-- Greeting -->
+        <div class="greeting">
+            <h1>Good morning, John 👋</h1>
+            <p>Here's your health overview for today. Stay on track with your care plan.</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-number">2</div>
+                <div class="stat-label">Upcoming Appointments</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Active Medications</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Symptom Logs This Month</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Prescriptions Refills</div>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+
+            <!-- ===== HEALTH METRICS ===== -->
+            <div class="card">
+                <div class="card-title">
+                    <span>📊 Health Metrics</span>
+                    <span class="badge">Updated: Today</span>
+                </div>
+                <div class="metric-grid">
+                    <div class="metric-item">
+                        <div class="value">6.2%</div>
+                        <div class="label">HbA1c</div>
+                        <span class="status status-good">● On Target</span>
+                    </div>
+                    <div class="metric-item">
+                        <div class="value">128/82</div>
+                        <div class="label">Blood Pressure</div>
+                        <span class="status status-good">● Normal</span>
+                    </div>
+                    <div class="metric-item">
+                        <div class="value">180</div>
+                        <div class="label">Cholesterol</div>
+                        <span class="status status-warning">● Borderline</span>
+                    </div>
+                    <div class="metric-item">
+                        <div class="value">72</div>
+                        <div class="label">Heart Rate</div>
+                        <span class="status status-good">● Normal</span>
+                    </div>
+                </div>
+                <div style="margin-top:1rem; text-align:center;">
+                    <button class="btn-secondary" style="font-size:0.75rem;">View Full Lab Results</button>
+                </div>
+            </div>
+
+            <!-- ===== UPCOMING APPOINTMENTS ===== -->
+            <div class="card">
+                <div class="card-title">
+                    <span>📅 Upcoming Appointments</span>
+                    <span class="badge">2 upcoming</span>
+                </div>
+                <div class="appt-list">
+                    <div class="appt-item">
+                        <span class="date">26 Aug</span>
+                        <div class="info">
+                            <div class="type">Physical Visit · Dr. Achieng</div>
+                            <div class="detail">10:30 AM · Diabetes follow-up</div>
+                        </div>
+                        <span class="status-pill confirmed">Confirmed</span>
+                    </div>
+                    <div class="appt-item">
+                        <span class="date">2 Sep</span>
+                        <div class="info">
+                            <div class="type">Online Consultation · Dr. Achieng</div>
+                            <div class="detail">2:15 PM · Hypertension check</div>
+                        </div>
+                        <span class="status-pill pending">Pending</span>
+                    </div>
+                    <div class="appt-item">
+                        <span class="date">15 Sep</span>
+                        <div class="info">
+                            <div class="type">Physical Visit · Dr. Achieng</div>
+                            <div class="detail">11:00 AM · Routine checkup</div>
+                        </div>
+                        <span class="status-pill confirmed">Confirmed</span>
+                    </div>
+                </div>
+                <div style="margin-top:1rem; display:flex; gap:0.5rem;">
+                    <button class="btn-primary" style="flex:1; text-align:center;">+ Book Appointment</button>
+                    <button class="btn-secondary">View All</button>
+                </div>
+            </div>
+
+            <!-- ===== ACTIVE MEDICATIONS ===== -->
+            <div class="card">
+                <div class="card-title">
+                    <span>💊 Active Medications</span>
+                    <span class="badge">4 active</span>
+                </div>
+                <div class="med-list">
+                    <div class="med-item">
+                        <div>
+                            <div class="name">Metformin</div>
+                            <div class="dosage">500mg · 1 tablet twice daily</div>
+                        </div>
+                        <span class="schedule">With meals</span>
+                    </div>
+                    <div class="med-item" style="border-left-color:#fde047;">
+                        <div>
+                            <div class="name">Amlodipine</div>
+                            <div class="dosage">5mg · 1 tablet daily</div>
+                        </div>
+                        <span class="schedule">Morning</span>
+                    </div>
+                    <div class="med-item" style="border-left-color:#86efac;">
+                        <div>
+                            <div class="name">Atorvastatin</div>
+                            <div class="dosage">20mg · 1 tablet daily</div>
+                        </div>
+                        <span class="schedule">Evening</span>
+                    </div>
+                    <div class="med-item" style="border-left-color:#7dd3fc;">
+                        <div>
+                            <div class="name">Lisinopril</div>
+                            <div class="dosage">10mg · 1 tablet daily</div>
+                        </div>
+                        <span class="schedule">Morning</span>
+                    </div>
+                </div>
+                <div style="margin-top:1rem;">
+                    <button class="btn-secondary" style="width:100%;">Request Refill</button>
+                </div>
+            </div>
+
+            <!-- ===== SYMPTOM LOG ===== -->
+            <div class="card">
+                <div class="card-title">
+                    <span>📝 Log Symptoms</span>
+                    <span class="badge">Track your health</span>
+                </div>
+                <div class="symptom-form">
+                    <textarea placeholder="How are you feeling today? Describe any symptoms, changes, or concerns…"></textarea>
+                    <div class="actions">
+                        <button class="btn-primary">Save Log</button>
+                        <button class="btn-secondary">Send to Doctor</button>
+                    </div>
+                </div>
+                <div class="symptom-history">
+                    <div class="symptom-entry">
+                        <span class="text">Mild headache and fatigue this morning</span>
+                        <span class="time">Today, 8:15 AM</span>
+                    </div>
+                    <div class="symptom-entry">
+                        <span class="text">Slight chest tightness after walking, resolved with rest</span>
+                        <span class="time">Yesterday, 6:30 PM</span>
+                    </div>
+                    <div class="symptom-entry">
+                        <span class="text">Dizziness in the morning, improved after breakfast</span>
+                        <span class="time">2 days ago, 7:45 AM</span>
+                    </div>
+                    <div class="symptom-entry">
+                        <span class="text">Good energy levels, no major concerns</span>
+                        <span class="time">3 days ago, 9:00 AM</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== RECENT PRESCRIPTIONS ===== -->
+            <div class="card full-width">
+                <div class="card-title">
+                    <span>📋 Recent Prescriptions</span>
+                    <span class="badge">Last 30 days</span>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem;">
+                    <div style="background:rgba(0,0,0,0.2); border-radius:14px; padding:1rem;">
+                        <div style="font-weight:600; color:#6ea8fe;">Metformin</div>
+                        <div style="font-size:0.85rem; color:#c6dbfa;">500mg · 1 tablet twice daily</div>
+                        <div style="font-size:0.7rem; color:#4d6f9a; margin-top:0.3rem;">Refills: 2 remaining</div>
+                        <div style="font-size:0.7rem; color:#86efac; margin-top:0.2rem;">● Active</div>
+                    </div>
+                    <div style="background:rgba(0,0,0,0.2); border-radius:14px; padding:1rem;">
+                        <div style="font-weight:600; color:#6ea8fe;">Amlodipine</div>
+                        <div style="font-size:0.85rem; color:#c6dbfa;">5mg · 1 tablet daily</div>
+                        <div style="font-size:0.7rem; color:#4d6f9a; margin-top:0.3rem;">Refills: 1 remaining</div>
+                        <div style="font-size:0.7rem; color:#86efac; margin-top:0.2rem;">● Active</div>
+                    </div>
+                    <div style="background:rgba(0,0,0,0.2); border-radius:14px; padding:1rem;">
+                        <div style="font-weight:600; color:#fde047;">Atorvastatin</div>
+                        <div style="font-size:0.85rem; color:#c6dbfa;">20mg · 1 tablet daily</div>
+                        <div style="font-size:0.7rem; color:#4d6f9a; margin-top:0.3rem;">Refills: 0 remaining</div>
+                        <div style="font-size:0.7rem; color:#fde047; margin-top:0.2rem;">● Refill needed</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

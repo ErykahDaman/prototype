@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bosa‑Care · prototype</title>
+  <style>
+    /* minimal reset – plain prototype */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: #f9f5f2;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      color: #1f1f1f;
+      line-height: 1.5;
+      padding: 2rem 1.5rem;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: #fffcf9;
+      border-radius: 28px;
+      padding: 2rem 2rem 2.5rem;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.04);
+      border: 1px solid #eee7e2;
+    }
+    hr { border: 0; border-top: 2px dashed #dcd3cd; margin: 2.8rem 0; }
+
+    /* plain typography */
+    h1, h2, h3 { font-weight: 600; letter-spacing: -0.01em; }
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #b07c78;
+      border-left: 3px solid #b07c78;
+      padding-left: 8px;
+      margin-bottom: 0.5rem;
+    }
+    .flex { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2rem; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; }
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 1.5rem 1.2rem;
+      border: 1px solid #e7dfd9;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    }
+    .badge {
+      display: inline-block;
+      background: #ebe3dd;
+      padding: 0.2rem 1rem;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.6rem 1.8rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1.5px solid #1f1f1f;
+      background: transparent;
+      color: #1f1f1f;
+      text-decoration: none;
+      transition: 0.1s;
+    }
+    .btn-primary { background: #1f1f1f; color: #f9f5f2; border-color: #1f1f1f; }
+    .btn-outline { border-color: #1f1f1f; background: transparent; }
+    .mt-2 { margin-top: 2rem; }
+    .mt-1 { margin-top: 1rem; }
+    .mb-1 { margin-bottom: 1rem; }
+
+    /* carousel placeholder */
+    .carousel-plain {
+      background: #e7dfd9;
+      border-radius: 20px;
+      padding: 1.2rem;
+      display: flex;
+      gap: 0.8rem;
+      overflow-x: auto;
+    }
+    .carousel-item {
+      background: #fff;
+      min-width: 140px;
+      padding: 0.8rem 1rem;
+      border-radius: 14px;
+      border: 1px solid #d5cbc4;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    .carousel-item small { display: block; font-weight: 400; color: #70635c; }
+    .dot-group { display: flex; gap: 6px; margin-top: 0.8rem; }
+    .dot { width: 10px; height: 10px; border-radius: 10px; background: #d5cbc4; }
+    .dot.active { background: #b07c78; width: 24px; }
+
+    .icon { font-size: 1.6rem; line-height: 1; }
+    .text-soft { color: #4d443e; }
+
+    /* responsive */
+    @media (max-width: 700px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .container { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ===== HEADER / NAV ===== -->
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2.5rem;">
+    <div style="display: flex; align-items: center; gap: 0.8rem;">
+      <span style="font-weight: 700; font-size: 1.5rem; letter-spacing: -0.02em;">Bosa‑Care</span>
+      <span class="badge">prototype</span>
+    </div>
+    <div style="display: flex; gap: 1.2rem; align-items: center; flex-wrap: wrap;">
+      
+      <a href="#" style="color: #1f1f1f; text-decoration: none; font-weight: 500; font-size: 0.9rem;">About</a>
+      <a href="#" style="color: #1f1f1f; text-decoration: none; font-weight: 500; font-size: 0.9rem;">Contact</a>
+      <span class="btn" style="padding: 0.3rem 1.2rem;">Log in</span>
+      <span class="btn btn-primary" style="padding: 0.3rem 1.6rem;">Sign up</span>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ===== HERO ===== -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: center;">
+    <div>
+      <div class="eyebrow">One platform · every step of care</div>
+      <h1 style="font-size: 2.8rem; line-height: 1.1; margin: 0.5rem 0 1rem;">Healthcare, <span style="color: #b07c78;">without</span> the hassle.</h1>
+      <p style="font-size: 1.1rem; color: #3d3732; max-width: 90%;">Bosa‑Care connects patients, facilities and pharmacies in one seamless platform — book appointments, access records and pay for care, all in one place.</p>
+      <div style="display: flex; gap: 0.8rem; margin: 1.6rem 0 1.2rem; flex-wrap: wrap;">
+        <span class="btn btn-primary">Get started</span>
+        <span class="btn btn-outline">See how it works</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; color: #5c524b;">
+        <span style="display: flex; gap: 4px;">● ● ●</span> One platform. Your healthcare journey. Simplified.
+      </div>
+    </div>
+   
+
+  <hr>
+
+  <!-- ===== FEATURES (solution) ===== -->
+  <div>
+    <div class="eyebrow">The solution</div>
+    <h2 style="font-size: 2rem;">One healthcare journey. One platform.</h2>
+    <div class="grid-3 mt-1">
+      <div class="card"><div class="icon">📅</div><h4>Smart appointments</h4><p style="font-size:0.9rem; color:#4d443e;">Book and manage without queues.</p></div>
+      <div class="card"><div class="icon">🗂️</div><h4>Digital health records</h4><p style="font-size:0.9rem; color:#4d443e;">Access medical info digitally.</p></div>
+      <div class="card"><div class="icon">💊</div><h4>Pharmacy management</h4><p style="font-size:0.9rem; color:#4d443e;">Track prescriptions, organised collection.</p></div>
+    </div>
+    
+
+  <hr>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <div>
+    <div class="eyebrow">How it works</div>
+    <h2 style="font-size: 2rem;">Four steps from booking to better care.</h2>
+    <div class="grid-4 mt-1">
+      <div><span style="background: #dcd3cd; padding: 0.2rem 0.9rem; border-radius: 40px; font-weight: 700;">01</span><h4>Register</h4><p style="font-size:0.9rem; color:#4d443e;">Create your profile in minutes.</p></div>
+      <div><span style="background: #dcd3cd; padding: 0.2rem 0.9rem; border-radius: 40px; font-weight: 700;">02</span><h4>Book</h4><p style="font-size:0.9rem; color:#4d443e;">Find your service and schedule.</p></div>
+      <div><span style="background: #dcd3cd; padding: 0.2rem 0.9rem; border-radius: 40px; font-weight: 700;">03</span><h4>Manage</h4><p style="font-size:0.9rem; color:#4d443e;">Access records & prescriptions.</p></div>
+      <div><span style="background: #1f1f1f; color: #f9f5f2; padding: 0.2rem 0.9rem; border-radius: 40px; font-weight: 700;">04</span><h4>Pay</h4><p style="font-size:0.9rem; color:#4d443e;">Seamless via Airscoll.</p></div>
+    </div>
+  </div>
+
+  <hr>
+
+
+  <!-- ===== FINAL CTA ===== -->
+  <div style="text-align: center; padding: 1rem 0 0.5rem;">
+    <div class="eyebrow" style="margin-bottom: 0.2rem;">Your health. Your time. Your choice.</div>
+    <h2 style="font-size: 2.4rem;">Experience a simpler way to navigate healthcare.</h2>
+    <p style="max-width: 500px; margin: 0.8rem auto; color: #3d3732;">Join Bosa-Care and bring appointments, records, pharmacy and payments into one place.</p>
+    <span class="btn btn-primary" style="padding: 0.7rem 2.8rem; font-size: 1rem;">Get started</span>
+  </div>
+
+  <hr>
+
+  <!-- ===== FOOTER ===== -->
+  <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem; color: #4d443e; padding-top: 0.5rem;">
+    <span><strong>Bosa‑Care</strong> · prototype</span>
+    <span>© 2026 Bosa‑Care · Gaborone, Botswana</span>
+  </div>
+
+  <!-- ===== plain auth modal placeholder ===== -->
+  <div style="margin-top: 2rem; padding: 1rem 0; border-top: 1px solid #e7dfd9; font-size: 0.8rem; color: #70635c; display: flex; gap: 1.5rem; flex-wrap: wrap;">
+    <span><strong>⚡ Auth modal (plain):</strong> click "Log in" or "Sign up" in nav → shows demo overlay (no real backend).</span>
+    <span><span class="badge" style="background: #d5cbc4;">login</span> <span class="badge" style="background: #d5cbc4;">signup</span> </span>
+  </div>
+
+</div>
+<!-- end container -->
+</body>
+</html>

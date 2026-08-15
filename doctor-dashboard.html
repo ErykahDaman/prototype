@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bosa‑Care · Doctor Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0b132b;
+            color: #e8edf5;
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.9rem 2rem;
+            background: rgba(11, 19, 43, 0.85);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(70, 130, 200, 0.15);
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+        .brand span {
+            color: #6ea8fe;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.8rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #b6c9e6;
+        }
+        .nav-links a {
+            transition: 0.15s;
+        }
+        .nav-links a:hover {
+            color: #8bb9ff;
+        }
+        .nav-links a.active {
+            color: #6ea8fe;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.9rem;
+            color: #b6c9e6;
+        }
+        .nav-user .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #1f4e8c, #2a62b0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fff;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(110, 168, 254, 0.4);
+            padding: 0.45rem 1.3rem;
+            border-radius: 40px;
+            color: #c6dbfa;
+            font-weight: 500;
+            transition: 0.2s;
+            font-size: 0.85rem;
+        }
+        .btn-outline:hover {
+            background: rgba(110, 168, 254, 0.08);
+            border-color: #6ea8fe;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-primary {
+            background: linear-gradient(145deg, #1f4e8c, #2a62b0);
+            border: 1px solid #3f7bc9;
+            padding: 0.6rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 600;
+            color: white;
+            transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(30, 80, 180, 0.25);
+            font-size: 0.85rem;
+        }
+        .btn-primary:hover {
+            background: #2a62b0;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 80, 180, 0.35);
+        }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 0.55rem 1.2rem;
+            border-radius: 40px;
+            color: #d3def5;
+            font-weight: 500;
+            transition: 0.15s;
+            font-size: 0.85rem;
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .btn-success {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            color: #86efac;
+            font-weight: 600;
+            font-size: 0.75rem;
+            transition: 0.15s;
+        }
+        .btn-success:hover {
+            background: rgba(34, 197, 94, 0.25);
+        }
+        .btn-warning {
+            background: rgba(234, 179, 8, 0.12);
+            border: 1px solid rgba(234, 179, 8, 0.25);
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            color: #fde047;
+            font-weight: 600;
+            font-size: 0.75rem;
+            transition: 0.15s;
+        }
+        .btn-warning:hover {
+            background: rgba(234, 179, 8, 0.2);
+        }
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            color: #fca5a5;
+            font-weight: 600;
+            font-size: 0.75rem;
+            transition: 0.15s;
+        }
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+        }
+
+        /* ===== STATS ROW ===== */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: rgba(20, 40, 70, 0.6);
+            border: 1px solid rgba(70, 130, 200, 0.15);
+            border-radius: 20px;
+            padding: 1.2rem 1.5rem;
+            backdrop-filter: blur(6px);
+            transition: 0.2s;
+        }
+        .stat-card:hover {
+            border-color: rgba(70, 130, 200, 0.3);
+        }
+        .stat-card .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #6ea8fe;
+            line-height: 1.1;
+        }
+        .stat-card .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #8aa9d9;
+            margin-top: 0.2rem;
+        }
+        .stat-card .stat-change {
+            font-size: 0.7rem;
+            color: #86efac;
+            margin-top: 0.3rem;
+        }
+
+        /* ===== GRID ===== */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: rgba(20, 40, 70, 0.6);
+            border: 1px solid rgba(70, 130, 200, 0.15);
+            border-radius: 20px;
+            padding: 1.5rem;
+            backdrop-filter: blur(6px);
+            transition: 0.2s;
+        }
+        .card:hover {
+            border-color: rgba(70, 130, 200, 0.25);
+        }
+        .card-title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #8aa9d9;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .card-title .badge {
+            background: rgba(110, 168, 254, 0.12);
+            padding: 0.15rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            color: #6ea8fe;
+        }
+
+        /* ===== PATIENT LIST ===== */
+        .patient-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .patient-list::-webkit-scrollbar {
+            width: 3px;
+        }
+        .patient-list::-webkit-scrollbar-thumb {
+            background: #2f5080;
+            border-radius: 6px;
+        }
+        .patient-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem 0.5rem;
+            border-bottom: 1px solid rgba(70, 130, 200, 0.06);
+            transition: 0.15s;
+        }
+        .patient-item:hover {
+            background: rgba(110, 168, 254, 0.04);
+            border-radius: 10px;
+        }
+        .patient-item .info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .patient-item .avatar-sm {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(110, 168, 254, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #6ea8fe;
+            flex-shrink: 0;
+        }
+        .patient-item .name {
+            font-weight: 500;
+            color: #e8edf5;
+        }
+        .patient-item .detail {
+            font-size: 0.78rem;
+            color: #8aa9d9;
+        }
+        .patient-item .actions {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        /* ===== APPOINTMENTS ===== */
+        .appt-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem 0.5rem;
+            border-bottom: 1px solid rgba(70, 130, 200, 0.06);
+        }
+        .appt-item .time {
+            font-weight: 600;
+            color: #6ea8fe;
+            font-size: 0.85rem;
+            min-width: 70px;
+        }
+        .appt-item .patient {
+            flex: 1;
+            margin: 0 1rem;
+        }
+        .appt-item .patient .name {
+            font-weight: 500;
+        }
+        .appt-item .patient .type {
+            font-size: 0.75rem;
+            color: #8aa9d9;
+        }
+        .status-pill {
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .status-pill.confirmed {
+            background: rgba(34, 197, 94, 0.15);
+            color: #86efac;
+        }
+        .status-pill.pending {
+            background: rgba(234, 179, 8, 0.12);
+            color: #fde047;
+        }
+        .status-pill.completed {
+            background: rgba(110, 168, 254, 0.12);
+            color: #7dd3fc;
+        }
+        .status-pill.cancelled {
+            background: rgba(239, 68, 68, 0.12);
+            color: #fca5a5;
+        }
+
+        /* ===== PRESCRIPTION FORM ===== */
+        .rx-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .rx-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+        .rx-field label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #8aa9d9;
+            margin-bottom: 0.3rem;
+        }
+        .rx-field input,
+        .rx-field select,
+        .rx-field textarea {
+            width: 100%;
+            padding: 0.6rem 0.9rem;
+            border-radius: 12px;
+            border: 1px solid rgba(70, 130, 200, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            color: #e8edf5;
+            font-size: 0.9rem;
+            font-family: 'DM Sans', sans-serif;
+            transition: 0.15s;
+        }
+        .rx-field input:focus,
+        .rx-field select:focus,
+        .rx-field textarea:focus {
+            outline: none;
+            border-color: #4a8ad6;
+            box-shadow: 0 0 0 3px rgba(74, 138, 214, 0.15);
+        }
+        .rx-field input::placeholder,
+        .rx-field textarea::placeholder {
+            color: #4d6f9a;
+        }
+        .rx-field textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        .rx-field select option {
+            background: #0b132b;
+        }
+
+        /* ===== RECENT ACTIVITY ===== */
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(70, 130, 200, 0.06);
+            font-size: 0.85rem;
+        }
+        .activity-item .icon {
+            font-size: 1.1rem;
+        }
+        .activity-item .text {
+            flex: 1;
+            color: #c6dbfa;
+        }
+        .activity-item .time {
+            font-size: 0.7rem;
+            color: #4d6f9a;
+        }
+
+        /* ===== FULL WIDTH ===== */
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .full-width {
+                grid-column: 1;
+            }
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 0.8rem 1rem;
+            }
+            .nav-links {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            .nav-right {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .container {
+                padding: 1rem;
+            }
+            .stats-row {
+                grid-template-columns: 1fr 1fr;
+            }
+            .rx-row {
+                grid-template-columns: 1fr;
+            }
+            .patient-item {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            .patient-item .actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+        @media (max-width: 480px) {
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <div class="brand">Bosa‑<span>Care</span></div>
+        <div class="nav-links">
+            <a href="#" class="active">Dashboard</a>
+            <a href="#">Patients</a>
+            <a href="#">Appointments</a>
+            <a href="#">Prescriptions</a>
+        </div>
+        <div class="nav-right">
+            <div class="nav-user">
+                <div class="avatar">SA</div>
+                <span>Dr. Sarah Achieng</span>
+            </div>
+            <button class="btn-outline" onclick="alert('Signing out…')">Sign Out</button>
+        </div>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="container">
+
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-number">24</div>
+                <div class="stat-label">Total Patients</div>
+                <div class="stat-change">↑ 3 this month</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Appointments Today</div>
+                <div class="stat-change">3 pending</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Prescriptions This Week</div>
+                <div class="stat-change">↑ 2 from last week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Pending Reports</div>
+                <div class="stat-change">Due this week</div>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+
+            <!-- ===== PATIENT LIST ===== -->
+            <div class="card">
+                <div class="card-title">
+                    <span>👥 Recent Patients</span>
+                    <span class="badge">24 total</span>
+                </div>
+                <div class="patient-list">
+                    <div class="patient-item">
+                        <div class="info">
+                            <div class="avatar-sm">JM</div>
+                            <div>
+                                <div class="name">John Matthews</div>
+                                <div class="detail">Type 2 Diabetes · Last visit: 12 Aug</div>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button class="btn-secondary" style="padding:0.2rem 0.8rem; font-size:0.7rem;">View</button>
+                        </div>
+                    </div>
+                    <div class="patient-item">
+                        <div class="info">
+                            <div class="avatar-sm">SJ</div>
+                            <div>
+                                <div class="name">Sarah Johnson</div>
+                                <div class="detail">Hypertension · Last visit: 15 Aug</div>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button class="btn-secondary" style="padding:0.2rem 0.8rem; font-size:0.7rem;">View</button>
+                        </div>
+                    </div>
+                    <div class="patient-item">
+                        <div class="info">
+                            <div class="avatar-sm">PW</div>
+                            <div>
+                                <div class="name">Peter Williams</div>
+                                <div class="detail">HIV Care · Last visit: 10 Aug</div>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button class="btn-secondary" style="padding:0.2rem 0.8rem; font-size:0.7rem;">View</button>
+                        </div>
+                    </div>
+                    <div class="patient-item">
+                        <div class="info">
+                            <div class="avatar-sm">EN</div>
+                            <div>
+                                <div class="name">Esther Njoroge</div>
+                                <div class="detail">Anaemia · Last visit: 18 Aug</div>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button class="btn-secondary" style="padding:0.2rem 0.8rem; font-size:0.7rem;">View</button>
+                        </div>
+                    </div>
+                    <div class="patient-item">
+                        <div class="info">
+                            <div class="avatar-sm">MO</div>
+                            <div>
+                                <div class="name">Michael Ochieng</div>
+                                <div class="detail">Cancer Care · Last visit: 5 Aug</div>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button class="btn-secondary" style="padding:0.2rem 0.8rem; font-size:0.7rem;">View</button>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:1rem;">
+                    <button class="btn-secondary" style="width:100%;">View All Patients</button>
+                </div>
+            </div>
+
+            <!-- ===== APPOINTMENTS ===== -->
+            <div class="card">
+                <div class="card-title">
+                    <span>📅 Today's Appointments</span>
+                    <span class="badge">8 total</span>
+                </div>
+                <div class="patient-list" style="max-height:300px;">
+                    <div class="appt-item">
+                        <span class="time">09:00</span>
+                        <div class="patient">
+                            <div class="name">John Matthews</div>
+                            <div class="type">Physical Visit · Diabetes check</div>
+                        </div>
+                        <span class="status-pill confirmed">Confirmed</span>
+                    </div>
+                    <div class="appt-item">
+                        <span class="time">10:30</span>
+                        <div class="patient">
+                            <div class="name">Sarah Johnson</div>
+                            <div class="type">Online Consultation · Hypertension</div>
+                        </div>
+                        <span class="status-pill pending">Pending</span>
+                    </div>
+                    <div class="appt-item">
+                        <span class="time">11:45</span>
+                        <div class="patient">
+                            <div class="name">Peter Williams</div>
+                            <div class="type">Physical Visit · HIV follow-up</div>
+                        </div>
+                        <span class="status-pill confirmed">Confirmed</span>
+                    </div>
+                    <div class="appt-item">
+                        <span class="time">13:15</span>
+                        <div class="patient">
+                            <div class="name">Esther Njoroge</div>
+                            <div class="type">Online Consultation · Anaemia</div>
+                        </div>
+                        <span class="status-pill pending">Pending</span>
+                    </div>
+                    <div class="appt-item">
+                        <span class="time">14:30</span>
+                        <div class="patient">
+                            <div class="name">Michael Ochieng</div>
+                            <div class="type">Physical Visit · Cancer follow-up</div>
+                        </div>
+                        <span class="status-pill confirmed">Confirmed</span>
+                    </div>
+                </div>
+                <div style="margin-top:1rem; display:flex; gap:0.5rem;">
+                    <button class="btn-primary" style="flex:1; text-align:center;">+ Add Appointment</button>
+                    <button class="btn-secondary">View All</button>
+                </div>
+            </div>
+
+            <!-- ===== PRESCRIPTION FORM ===== -->
+            <div class="card full-width">
+                <div class="card-title">
+                    <span>💊 Send Prescription</span>
+                    <span class="badge">Quick action</span>
+                </div>
+                <div class="rx-form">
+                    <div class="rx-row">
+                        <div class="rx-field">
+                            <label>Patient</label>
+                            <select>
+                                <option value="">Select patient</option>
+                                <option>John Matthews</option>
+                                <option>Sarah Johnson</option>
+                                <option>Peter Williams</option>
+                                <option>Esther Njoroge</option>
+                                <option>Michael Ochieng</option>
+                            </select>
+                        </div>
+                        <div class="rx-field">
+                            <label>Medication</label>
+                            <input type="text" placeholder="e.g. Amlodipine 5mg" />
+                        </div>
+                    </div>
+                    <div class="rx-row">
+                        <div class="rx-field">
+                            <label>Dosage</label>
+                            <input type="text" placeholder="e.g. 1 tablet daily" />
+                        </div>
+                        <div class="rx-field">
+                            <label>Duration</label>
+                            <input type="text" placeholder="e.g. 30 days" />
+                        </div>
+                    </div>
+                    <div class="rx-row">
+                        <div class="rx-field">
+                            <label>Refills</label>
+                            <select>
+                                <option value="0">No refills</option>
+                                <option value="1">1 refill</option>
+                                <option value="2">2 refills</option>
+                                <option value="3">3 refills</option>
+                            </select>
+                        </div>
+                        <div class="rx-field">
+                            <label>Instructions</label>
+                            <input type="text" placeholder="e.g. Take with food" />
+                        </div>
+                    </div>
+                    <button class="btn-primary" style="width:fit-content; padding:0.7rem 2rem;">Send Prescription</button>
+                </div>
+            </div>
+
+            <!-- ===== RECENT ACTIVITY ===== -->
+            <div class="card full-width">
+                <div class="card-title">
+                    <span>🕐 Recent Activity</span>
+                    <span class="badge">Last 24 hours</span>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                    <div>
+                        <div class="activity-item">
+                            <span class="icon">💊</span>
+                            <span class="text">Prescribed Amlodipine to Sarah Johnson</span>
+                            <span class="time">2h ago</span>
+                        </div>
+                        <div class="activity-item">
+                            <span class="icon">📅</span>
+                            <span class="text">Confirmed appointment with John Matthews</span>
+                            <span class="time">3h ago</span>
+                        </div>
+                        <div class="activity-item">
+                            <span class="icon">📋</span>
+                            <span class="text">Reviewed lab results for Peter Williams</span>
+                            <span class="time">5h ago</span>
+                        </div>
+                        <div class="activity-item">
+                            <span class="icon">💊</span>
+                            <span class="text">Prescribed Metformin to Esther Njoroge</span>
+                            <span class="time">6h ago</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="activity-item">
+                            <span class="icon">📅</span>
+                            <span class="text">Rescheduled appointment for Michael Ochieng</span>
+                            <span class="time">8h ago</span>
+                        </div>
+                        <div class="activity-item">
+                            <span class="icon">📋</span>
+                            <span class="text">Updated treatment plan for John Matthews</span>
+                            <span class="time">10h ago</span>
+                        </div>
+                        <div class="activity-item">
+                            <span class="icon">👤</span>
+                            <span class="text">New patient registered: Mary Wanjiru</span>
+                            <span class="time">12h ago</span>
+                        </div>
+                        <div class="activity-item">
+                            <span class="icon">💊</span>
+                            <span class="text">Prescription refill for Peter Williams</span>
+                            <span class="time">14h ago</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

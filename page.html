@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Password Breach — 50 to Unlock ⚡</title>
+<style>
+  :root{
+    --bg1:#0d0d0d; --bg2:#111; --card:#111111dd; --accent:#ff4c4c; --accent2:#00ffea;
+  }
+  html,body{height:100%;margin:0;font-family:Consolas,monospace,monospace;}
+  body{
+    display:flex;align-items:center;justify-content:center;
+    background: radial-gradient(circle at 30% 30%, #0f0f0f, #050505 80%);
+    overflow:hidden;color:#0f0;
+  }
+
+  .card{
+    width:min(980px,96vw); max-width:1100px; height:min(760px,90vh); border-radius:12px;
+    padding:22px; background: linear-gradient(180deg, #111111cc, #1a1a1acc);
+    box-shadow:0 0 30px #0ff; display:grid; grid-template-columns: 1fr 420px; gap:18px; position:relative;
+    border: 1px solid #00ffcc;
+  }
+
+  header{grid-column: 1 / -1; display:flex; align-items:center; gap:14px; margin-bottom:4px;}
+  .logo{width:56px;height:56px;border-radius:12px;background:#0ff;display:flex;align-items:center;justify-content:center;font-size:28px;color:#111}
+  h1{margin:0;font-size:1.5rem;color:#0ff; text-shadow:0 0 8px #ff4c4c;}
+  p.lead{margin:0;color:#0f0; font-size:0.95rem;}
+
+  .left {
+    padding:16px; border-radius:12px; background: #11111199; border:1px solid #00ffcc;
+    display:flex; flex-direction:column; gap:12px; overflow:hidden;
+  }
+
+  .controls { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  input[type="text"]{flex:1;padding:10px;border-radius:6px;border:1px solid #0ff; background:#000; color:#0f0; font-size:14px}
+  button{background:var(--accent); border:none; color:#111; padding:10px 12px; border-radius:6px; cursor:pointer; font-weight:600; text-shadow:0 0 4px #000;}
+  button.secondary{background:#000;color:#0ff;border:1px solid #0ff}
+  .file-input { font-size:14px; padding:8px 10px; border-radius:6px; border:1px dashed #0ff; background:#000; color:#0f0; }
+
+  .progress {
+    height:14px; background:#222; border-radius:999px; border:1px solid #0ff; overflow:hidden;
+  }
+  .progress > i { display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition: width 320ms ease; }
+
+  .list-area { flex:1; overflow:auto; padding:8px; border-radius:10px; background:#111; border:1px solid #0ff; color:#0f0; }
+  .pw-item { display:flex; justify-content:space-between; gap:10px; padding:8px; border-radius:6px; background:rgba(255,0,0,0.05); margin-bottom:6px; align-items:center; font-family:monospace;}
+  .pw-text { letter-spacing:0.6px; font-size:13px; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .pw-actions button{ background:transparent; border:0; color:#0ff; cursor:pointer; font-size:13px }
+
+  .right {
+    padding:16px; border-radius:12px; background: #111; border:1px solid #0ff;
+    display:flex; flex-direction:column; gap:12px;
+  }
+
+  .goal { font-size:13px; color:#0f0; padding:8px; background:#000; border-radius:6px; border:1px solid #0ff; }
+  .stats { display:flex; gap:10px; align-items:center; font-weight:700; color:#0f0; font-size:14px }
+
+  .flagbox{
+    margin-top:auto; padding:12px; border-radius:10px; background:#000; box-shadow:0 0 10px #ff4c4c;
+    transform: translateY(12px); opacity:0; transition: opacity 420ms ease, transform 420ms ease; pointer-events:none; display:flex; gap:12px; align-items:center;
+  }
+  .flagbox.show{opacity:1; transform: translateY(0); pointer-events:auto;}
+  .flag { font-family: "Courier New", monospace; background: linear-gradient(90deg,#ff4c4c,#00ffea); -webkit-background-clip:text; color:transparent; font-weight:800; padding:6px 10px; border-radius:6px; letter-spacing:0.6px; font-size:15px; }
+
+  .hint { font-size:12px; color:#0f0; background:rgba(0,0,0,0.6); padding:6px; border-radius:6px; }
+
+  .confetti{position:absolute;width:10px;height:10px;border-radius:50%;opacity:0.9; transform-origin:center; animation: drift linear infinite;}
+  @keyframes drift { from{transform:translateY(40vh) rotate(0);opacity:1} to{transform:translateY(-30vh) rotate(360deg);opacity:0} }
+</style>
+</head>
+<body>
+  <div class="card" id="card">
+    <header>
+      <div class="logo">💀</div>
+      <div>
+        <h1>Password Breach</h1>
+        <p class="lead">Provision unique passphrases to validate the vault</p>
+      </div>
+    </header>
+
+    <section class="left" aria-label="interactive area">
+      <div class="controls" role="group" aria-label="input controls">
+        <input id="pwInput" type="text" placeholder="Type a password/word and press Add" aria-label="password input"/>
+        <button id="addBtn">Add</button>
+        <label class="file-input">
+          <input id="fileInp" type="file" accept=".txt" style="display:none"/>
+          Upload file to bypass
+        </label>
+         
+      </div>
+
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:13px;">Progress</div>
+          <div style="font-size:13px;">Unique words: <span id="count">0</span> / 50</div>
+        </div>
+        <div class="progress" aria-hidden="true" style="margin-top:6px;"><i id="progressBar"></i></div>
+      </div>
+
+      <div class="list-area" id="list" aria-live="polite" aria-label="added passwords">
+        <div style="color:#0a0; font-size:13px; text-align:center; padding-top:26px;">No words yet — add one at a time or upload a file.</div>
+      </div>
+
+      <div style="display:flex; gap:8px; align-items:center;">
+        <div class="hint">Tip: Stay sharp, hacker.</div>
+        <div style="margin-left:auto; font-size:12px;">Double-click an item to remove it.</div>
+      </div>
+    </section>
+
+    <aside class="right" aria-label="status and reveal">
+      <div class="goal">
+        
+      </div>
+
+      <div class="stats">
+        <div>Collected: <span id="collected" style="margin-left:8px">0</span></div>
+        <div style="margin-left:10px">Missing: <span id="missing" style="margin-left:8px">50</span></div>
+      </div>
+
+      <div style="font-size:13px;">Uploaded file status: <span id="fileStatus">none</span></div>
+
+      <div class="flagbox" id="flagbox" aria-hidden="true">
+        <div style="font-size:13px;">Flag:</div>
+        <div class="flag" id="flagText">[hidden]</div>
+      </div>
+    </aside>
+  </div>
+
+<script>
+const FLAG_PARTS = [89,87,78,107,90,107,78,85,82,110,116,68,100,88,73,120,98,51,77,120,90,88,82,53,88,51,65,48,101,88,78,102,77,71,90,109,102,81,61,61];
+const FLAG_B64 = String.fromCharCode(...FLAG_PARTS);
+
+const REQUIRED = 50;
+const wordSet = new Set();
+const listEl = document.getElementById('list');
+const countEl = document.getElementById('count');
+const collectedEl = document.getElementById('collected');
+const missingEl = document.getElementById('missing');
+const progressBar = document.getElementById('progressBar');
+const flagbox = document.getElementById('flagbox');
+const flagText = document.getElementById('flagText');
+const fileStatus = document.getElementById('fileStatus');
+
+function updateUI(){
+  const n = wordSet.size;
+  countEl.textContent = n;
+  collectedEl.textContent = n;
+  missingEl.textContent = Math.max(0, REQUIRED - n);
+  const pct = Math.min(100, Math.round((n/REQUIRED)*100));
+  progressBar.style.width = pct + '%';
+
+  listEl.innerHTML = '';
+  if(n === 0){
+    const hint = document.createElement('div');
+    hint.style.color='#0a0'; hint.style.fontSize='13px'; hint.style.textAlign='center'; hint.style.paddingTop='26px';
+    hint.textContent = 'No words yet — add one at a time or upload a file.';
+    listEl.appendChild(hint);
+  } else {
+    Array.from(wordSet).forEach(w => {
+      const item = document.createElement('div');
+      item.className = 'pw-item';
+      const t = document.createElement('div'); t.className='pw-text';
+      t.textContent = w.length > 4 ? (w.slice(0,1)+'•'.repeat(Math.min(6,w.length-2))+w.slice(-1)) : w;
+      const actions = document.createElement('div'); actions.className='pw-actions';
+      const btnView = document.createElement('button'); btnView.textContent='show'; btnView.onclick = (ev)=>{ev.stopPropagation(); alert(w);}
+      actions.appendChild(btnView);
+      item.appendChild(t); item.appendChild(actions);
+      item.addEventListener('dblclick', ()=>{ wordSet.delete(w); updateUI(); });
+      listEl.appendChild(item);
+    });
+  }
+  if(wordSet.size >= REQUIRED){ revealFlag(); }
+}
+
+function addWordRaw(raw){ if(!raw) return; const w=raw.trim().toLowerCase(); if(!w) return; if(wordSet.has(w)){flashTip('Already added'); return;} wordSet.add(w); updateUI(); flashTip('Added!'); }
+function flashTip(msg){ const tip=document.createElement('div'); tip.textContent=msg; tip.style.position='fixed'; tip.style.left='50%'; tip.style.top='10%'; tip.style.transform='translateX(-50%)'; tip.style.background='#000'; tip.style.color='#0ff'; tip.style.padding='8px 12px'; tip.style.borderRadius='10px'; tip.style.zIndex=9999; document.body.appendChild(tip); setTimeout(()=>tip.remove(),900);}
+document.getElementById('addBtn').addEventListener('click',()=>{ addWordRaw(document.getElementById('pwInput').value); document.getElementById('pwInput').value=''; });
+document.getElementById('pwInput').addEventListener('keydown',(e)=>{ if(e.key==='Enter'){ addWordRaw(e.target.value); e.target.value=''; } });
+
+const fileInp=document.getElementById('fileInp'); const fileLabel=document.querySelector('.file-input');
+fileLabel.addEventListener('click',()=>fileInp.click());
+fileInp.addEventListener('change',(ev)=>{ const f=ev.target.files[0]; if(!f) return; fileStatus.textContent='reading...'; const reader=new FileReader(); reader.onload=(e)=>{ const rawWords=String(e.target.result||'').split(/\s+/).map(s=>s.trim()).filter(Boolean); const uniq=new Set(rawWords.map(s=>s.toLowerCase())); fileStatus.textContent=`${uniq.size} unique words found`; uniq.forEach(u=>wordSet.add(u)); updateUI(); if(uniq.size>=REQUIRED) flashTip('File had 50+ words! Bypass granted.'); }; reader.onerror=()=>{fileStatus.textContent='read error';}; reader.readAsText(f); fileInp.value='';});
+
+document.getElementById('genBtn').addEventListener('click',()=>{ const sample=[]; for(let i=1;i<=50;i++){ sample.push('secretword'+i);} const blob=new Blob([sample.join('\n')],{type:'text/plain'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='sample_50_words.txt'; a.click(); URL.revokeObjectURL(url); flashTip('Sample file downloaded (50 words)');});
+
+let revealed=false;
+function decodeFlag(b64){ try{return atob(b64);} catch(e){return '[decode error]';}}
+function revealFlag(){ if(revealed) return; revealed=true; flagText.textContent=decodeFlag(FLAG_B64); flagbox.classList.add('show'); spawnConfettiBurst(); }
+function spawnConfettiBurst(){ const colors=["#ff4c4c","#00ffea","#ff0","#0f0","#f0f"]; for(let i=0;i<40;i++){ const c=document.createElement('div'); c.className='confetti'; const size=Math.floor(6+Math.random()*12); c.style.width=c.style.height=size+'px'; c.style.left=(20+Math.random()*60)+'%'; c.style.top=(40+Math.random()*20)+'%'; c.style.background=colors[i%colors.length]; c.style.animationDuration=(3+Math.random()*3)+'s'; document.getElementById('card').appendChild(c); setTimeout(()=>c.remove(),7000); } }
+
+document.getElementById('pwInput').addEventListener('paste',(ev)=>{ const text=(ev.clipboardData||window.clipboardData).getData('text'); if(!text) return; const parts=text.split(/\s+/).map(s=>s.trim()).filter(Boolean); if(parts.length>1){ parts.forEach(p=>wordSet.add(p.toLowerCase())); updateUI(); ev.preventDefault(); flashTip(`Added ${parts.length} words from paste`); }});
+
+updateUI();
+</script>
+</body>
+</html>
